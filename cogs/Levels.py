@@ -233,10 +233,6 @@ class LevelsController:
         """get the boost that the server/user will have then"""
         boost = 1
         config: GConfig = await self.config_hander.get_config(message.guild.id)
-        if message.author.roles.__contains__(
-            message.guild.get_role(self.bot.config.roles.nitro)
-        ):
-            boost = 2
         if config.xp_boost_active:
             boost *= config.xp_boost
         return int(boost)

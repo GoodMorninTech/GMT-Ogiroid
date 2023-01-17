@@ -9,46 +9,31 @@ from typing import Final
 
 @dataclass
 class Channels:
-    suggestion_reddit_bot: int = 982353129913851924
-    bug_report_reddit_bot: int = 982669110926250004
-    suggestion_ogiroid: int = 985554479405490216
-    bug_report_ogiroid: int = 985554459948122142
-    errors: int = 986531210283069450
-    reddit_faq: int = 985908874362093620
-    tickets: int = 1005904969737711760
-    logs: int = 977581277010100315
-    staff_vote: int = 1005741491861344286
-    welcome: int = 905183354930995320
-    goodbye: int = 905183354930995320  # same as welcome
-    starboard: int = 1011210884875550821
-    reddit_bot: int = 981613938166890556
-    introduction: int = 980049243236597780
-    general: int = 897666935708352587
-    roles: int = 933102052173828136
-    rules: int = 905182869410955355
-    uploads: int = 1033712950252408884
-    birthdays: int = 1044886735588429864
-    ogiroid_logs: int = 1040797919214845962
+    suggestion: int = 1064930915257688114
+    bug_report: int = 1064930915257688114
+    errors: int = 1064931093008097435
+    tickets: int = 1064932104095412325
+    logs: int = 1064931261065461942
+    staff_vote: int = 1052987887983009823
+    welcome: int = 1064931352044122142
+    goodbye: int = 1064931352044122142  # same as welcome
+    general: int = 1052669139761758361
+    roles: int = 1064931628822040576
+    rules: int = 1062070215850082385
+    ogiroid_logs: int = 1064931204232663131
 
     @classmethod
     def dev(cls):
-        cls.suggestion_reddit_bot: int = 1007334702442619010
-        cls.bug_report_reddit_bot: int = 1007334758214279198
-        cls.suggestion_ogiroid: int = 985554479405490216
-        cls.bug_report_ogiroid: int = 985554459948122142
-        cls.reddit_faq: int = 985908874362093620
+        cls.suggestion: int = 1007334702442619010
+        cls.bug_report: int = 1007334758214279198
         cls.tickets: int = 1003006753564262452
         cls.logs: int = 988162723890217040
         cls.staff_vote: int = 1002132747441152071
         cls.welcome = cls.goodbye = 985961186107461673
-        cls.starboard: int = 985936949581865030
-        cls.reddit_bot: int = 1012349179810553917
         cls.introduction: int = 1013853473172893837
         cls.general: int = 985729550732394536
         cls.roles: int = 1013853473172893837
         cls.rules: int = 1013853473172893837
-        cls.uploads: int = 1013853473172893837
-        cls.birthdays: int = 1013853473172893837  # dummy channel
         cls.ogiroid_logs: int = 1053627879348514869
         return cls
 
@@ -56,7 +41,7 @@ class Channels:
 @dataclass
 class Guilds:
     # Lewis server
-    main_guild: int = 897666935708352582
+    main_guild: int = 1052669138000158820
 
     @classmethod
     def dev(cls):
@@ -67,28 +52,19 @@ class Guilds:
 
 @dataclass
 class Roles:
-    staff: int = 980700205328502794
-    yt_announcements: int = 1010237178036633670
-    birthday: int = 1044883332548280360
-    nitro: int = 970695593913647144
+    staff: int = 1052670395951624303
 
     @classmethod
     def dev(cls):
         cls.staff: int = 985943266115584010
-        cls.yt_announcements: int = 1007202835957563412  # dummy role
-        cls.birthday: int = 1007202835957563412  # dummy role
         return cls
 
 
 @dataclass
 class Emojis:
-    rules: str = "<:rules:1006016761809866752>"
-    roles: str = "<:roles:1006016760731926641>"
 
     @classmethod
     def dev(cls):
-        cls.rules: str = "<:emoji_18:1006073757976244244>"
-        cls.roles: str = "<:role:990310706874290216>"
         return cls
 
 

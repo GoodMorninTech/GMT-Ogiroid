@@ -17,7 +17,6 @@ class Welcome(Cog):
         if member.guild.id != self.bot.config.guilds.main_guild:
             return
         if member.dm_channel is None:
-            introduction = self.bot.get_channel(self.bot.config.channels.introduction)
             general = self.bot.get_channel(self.bot.config.channels.general)
             roles = self.bot.get_channel(self.bot.config.channels.roles)
             reddit_bot = self.bot.get_channel(self.bot.config.channels.reddit_bot)
@@ -33,11 +32,6 @@ class Welcome(Cog):
             embed.add_field(
                 name="Chat with other members:",
                 value=f"Chat with the members, {general.mention}",
-                inline=True,
-            )
-            embed.add_field(
-                name="Introductions:",
-                value=f"Introduce yourself, {introduction.mention}",
                 inline=True,
             )
             embed.add_field(

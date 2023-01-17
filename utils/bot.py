@@ -8,12 +8,9 @@ from disnake import ApplicationCommandInteraction, OptionType
 from disnake.ext import commands
 
 from utils.CONSTANTS import __VERSION__
-from utils.DBhandlers import BlacklistHandler
 from utils.cache import async_cache
 from utils.config import Config
-from utils.exceptions import UserBlacklisted
 from utils.http import HTTPSession
-from utils.shortcuts import errorEmb
 
 with open("setup.sql", "r") as sql_file:
     SETUP_SQL = sql_file.read()
@@ -35,20 +32,6 @@ class OGIROID(commands.InteractionBot):
         self.commands_ran = {}
         self.total_commands_ran = 0
         self.db = None
-        self.blacklist: BlacklistHandler = None
-        self.add_app_command_check(
-            self.blacklist_check, slash_commands=True, call_once=True
-        )
-
-    async def blacklist_check(self, ctx):
-        try:
-            await self.wait_until_ready()
-            if await self.blacklist.blacklisted(ctx.author.id):
-                await errorEmb(ctx, "You are blacklisted from using this bot!")
-                raise UserBlacklisted
-            return True
-        except AttributeError:
-            pass  # DB hasn't loaded yet
 
     async def on_command(self, ctx):
         self.total_commands_ran += 1
@@ -120,8 +103,6 @@ class OGIROID(commands.InteractionBot):
     async def _setup(self):
         for command in self.application_commands:
             self.commands_ran[f"{command.qualified_name}"] = 0
-        self.blacklist: BlacklistHandler = BlacklistHandler(self, self.db)
-        await self.blacklist.startup()
 
     async def start(self, *args, **kwargs):
         async with aiosqlite.connect("data.db") as self.db:
