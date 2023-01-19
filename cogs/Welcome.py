@@ -19,7 +19,6 @@ class Welcome(Cog):
         if member.dm_channel is None:
             general = self.bot.get_channel(self.bot.config.channels.general)
             roles = self.bot.get_channel(self.bot.config.channels.roles)
-            reddit_bot = self.bot.get_channel(self.bot.config.channels.reddit_bot)
             rules = self.bot.get_channel(self.bot.config.channels.rules)
 
             await member.create_dm()
@@ -36,11 +35,6 @@ class Welcome(Cog):
             )
             embed.add_field(
                 name="Roles:", value=f"Select some roles, {roles.mention}", inline=True
-            )
-            embed.add_field(
-                name="Reddit Bot Related:",
-                value=f"Here for the Reddit bot? Checkout {reddit_bot.mention}",
-                inline=True,
             )
             embed.add_field(
                 name="Rules:", value=f"Checkout the rules, {rules.mention}", inline=True
