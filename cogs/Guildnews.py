@@ -122,7 +122,7 @@ class GuildNews(commands.Cog):
         guilds = await self.news_handler.get_configs()
         current_time = datetime.datetime.utcnow().strftime("%H:00")
         for guild in guilds:
-            if guild.frequency == "everyday" and guild.time == current_time:
+            if guild.frequency == "everyday":
                 await self.send_news_to_channel(guild)
             elif guild.frequency == "weekdays" and guild.time == current_time:
                 if datetime.datetime.today().weekday() < 5:
@@ -154,11 +154,11 @@ class GuildNews(commands.Cog):
 
         for article in articles:
             await channel.send(
-                embed=disnake.Embed(colour=self.bot.config.colours.white).add_field(
+                embed=disnake.Embed(colour=0xDD444).add_field(
                     name=article["title"],
-                    value=f"{article['description']}\n[Read more]({article['url']}) **Source**: {article['source']}",
+                    value=f"{article['description']}\n[Read more]({article['url']})\n**Source**: {article['source']}",
                     inline=False,
-                )
+                ).set_image(url=article["thumbnail"])
             )
 
 
