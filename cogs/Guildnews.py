@@ -29,6 +29,7 @@ class GuildNews(commands.Cog):
     def cog_unload(self) -> None:
         self.send_news.cancel()
 
+    @commands.has_permissions(administrator=True)
     @commands.slash_command(name="setup", description="Setup the news channel")
     async def setup(
         self,
