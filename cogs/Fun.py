@@ -427,7 +427,11 @@ class Fun(commands.Cog):
     async def morse(self, inter):
         pass
 
-    @morse.sub_command(guild_ids=[main_guild], name="encode", description="Encodes text into morse code.")
+    @morse.sub_command(
+        guild_ids=[main_guild],
+        name="encode",
+        description="Encodes text into morse code.",
+    )
     async def encode(self, inter: ApplicationCommandInteraction, text: str):
         encoded_list = []
 
@@ -440,7 +444,11 @@ class Fun(commands.Cog):
         encoded_string = " ".join(encoded_list)
         await inter.send(f"``{encoded_string}``")
 
-    @morse.sub_command(guild_ids=[main_guild], name="decode", description="Decodes Morse Code into Text.")
+    @morse.sub_command(
+        guild_ids=[main_guild],
+        name="decode",
+        description="Decodes Morse Code into Text.",
+    )
     async def decode(self, inter: ApplicationCommandInteraction, morse_code):
         decoded_list = []
         morse_list = morse_code.split()
@@ -461,7 +469,11 @@ class Fun(commands.Cog):
     async def pokemon(self, inter):
         pass
 
-    @pokemon.sub_command(guild_ids=[main_guild], name="info", description="Get information about a Pokémon.")
+    @pokemon.sub_command(
+        guild_ids=[main_guild],
+        name="info",
+        description="Get information about a Pokémon.",
+    )
     async def info(
         self,
         inter: ApplicationCommandInteraction,

@@ -70,7 +70,6 @@ class Memes(commands.Cog):
     )
     async def free_money(self, inter):
         """Get free money"""
-        print(main_guild)
         await inter.send(
             "Free money hack!\n[Click here for free money](<https://youtu.be/dQw4w9WgXcQ>)"
         )

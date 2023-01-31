@@ -34,7 +34,9 @@ class Timezone(commands.Cog):
     async def timezone(self, inter: disnake.ApplicationCommandInteraction):
         pass
 
-    @timezone.sub_command(guild_ids=[main_guild], name="set", description="Set your timezone.")
+    @timezone.sub_command(
+        guild_ids=[main_guild], name="set", description="Set your timezone."
+    )
     async def set(
         self,
         inter,
@@ -66,7 +68,9 @@ class Timezone(commands.Cog):
             f" Its should be {dt.datetime.now(pytz.timezone(timezone)).strftime('%H:%M')} at your location.",
         )
 
-    @timezone.sub_command(guild_ids=[main_guild], name="edit", description="Edit your timezone.")
+    @timezone.sub_command(
+        guild_ids=[main_guild], name="edit", description="Edit your timezone."
+    )
     async def edit(
         self,
         inter,
@@ -97,7 +101,9 @@ class Timezone(commands.Cog):
         except UserNotFound:
             return await errorEmb(inter, "The User doesn't have a timezone set")
 
-    @timezone.sub_command(guild_ids=[main_guild], name="remove", description="Remove your timezone.")
+    @timezone.sub_command(
+        guild_ids=[main_guild], name="remove", description="Remove your timezone."
+    )
     async def remove(
         self,
         inter: disnake.ApplicationCommandInteraction,
@@ -109,7 +115,9 @@ class Timezone(commands.Cog):
 
         await sucEmb(inter, "The timezone has been removed")
 
-    @timezone.sub_command(guild_ids=[main_guild], name="get", description="Get the timezone of a user")
+    @timezone.sub_command(
+        guild_ids=[main_guild], name="get", description="Get the timezone of a user"
+    )
     async def get(
         self, inter, user: disnake.User = commands.Param(name="user", default=None)
     ):

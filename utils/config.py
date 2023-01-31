@@ -67,6 +67,7 @@ class Config:
         Development: bool = False
     else:
         raise ValueError("DEVELOPMENT in secrets.env must be set to true or false")
+    mongo_uri: str = os.getenv("MONGO_URI")
     colors = Colors
     colours = colors
     tokens = Tokens

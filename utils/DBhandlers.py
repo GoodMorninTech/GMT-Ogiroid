@@ -16,6 +16,7 @@ from utils.models import (
     WarningModel,
     BirthdayModel,
     TimezoneModel,
+    GuildNewsModel,
 )
 
 if TYPE_CHECKING:
@@ -754,6 +755,62 @@ class TimezoneHandler:
         await self.db.execute(
             "UPDATE timezone SET timezone = ?, timezone_last_changed = ? WHERE user_id = ?",
             [timezone, int(time.time()), user_id],
+        )
+        await self.db.commit()
+        return True
+
+
+class GuildNewsHandler:
+    def __init__(self, bot, db):
+        self.db = db
+        self.bot = bot
+
+    async def get_config(self, guild_id: int):
+        async with self.db.execute(
+            "SELECT * FROM guild_news WHERE guild_id = ?", [guild_id]
+        ) as cur:
+            content = await cur.fetchone()
+            if content is None:
+                return None
+            return GuildNewsModel(*content)
+
+    async def get_configs(self):
+        configs = []
+        async with self.db.execute("SELECT * FROM guild_news") as cur:
+            async for row in cur:
+                configs.append(GuildNewsModel(*row))
+        return configs
+
+    async def delete_config(self, guild_id: int) -> bool:
+        config = await self.get_config(guild_id)
+        if config is None:
+            raise GuildNewsNotFound
+        await self.db.execute("DELETE FROM guild_news WHERE guild_id = ?", [guild_id])
+        await self.db.commit()
+        return True
+
+    async def create_config(
+        self, guild_id: int, channel_id: int, frequency, news, extras, time
+    ) -> bool:
+        config = await self.get_config(guild_id)
+        if config is not None:
+            raise GuildNewsAlreadyExists
+        await self.db.execute(
+            "INSERT INTO guild_news (guild_id, frequency, channel_id, news, extras, time) VALUES (?, ?, ?, ?, ?, ?)",
+            [guild_id, frequency, channel_id, news, extras, time],
+        )
+        await self.db.commit()
+        return True
+
+    async def update_config(
+        self, guild_id: int, channel_id: int, news, frequency, extras, time
+    ) -> bool:
+        config = await self.get_config(guild_id)
+        if config is None:
+            raise GuildNewsNotFound
+        await self.db.execute(
+            "UPDATE guild_news SET channel_id = ?, news = ?, frequency = ?, extras = ?, time = ? WHERE guild_id = ?",
+            [channel_id, news, frequency, extras, guild_id, time],
         )
         await self.db.commit()
         return True

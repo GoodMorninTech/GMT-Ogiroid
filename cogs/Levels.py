@@ -469,7 +469,9 @@ class Level(commands.Cog):
 
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
-    @xp_boost.sub_command(guild_ids=[main_guild], )
+    @xp_boost.sub_command(
+        guild_ids=[main_guild],
+    )
     async def active(self, inter: ApplicationCommandInteraction, active: bool):
         """Enable or disable xp boost"""
         await self.bot.db.execute(
@@ -483,7 +485,9 @@ class Level(commands.Cog):
 
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
-    @xp_boost.sub_command(guild_ids=[main_guild], )
+    @xp_boost.sub_command(
+        guild_ids=[main_guild],
+    )
     async def get(self, inter: ApplicationCommandInteraction):
         async with self.bot.db.execute(
             "SELECT * FROM config WHERE guild_id = ?", (inter.guild.id,)
@@ -504,7 +508,9 @@ class Level(commands.Cog):
 
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
-    @xp_boost.sub_command(guild_ids=[main_guild], )
+    @xp_boost.sub_command(
+        guild_ids=[main_guild],
+    )
     async def set(
         self,
         inter: ApplicationCommandInteraction,
@@ -662,7 +668,9 @@ class Level(commands.Cog):
 
         return
 
-    @role_reward.sub_command(guild_ids=[main_guild], )
+    @role_reward.sub_command(
+        guild_ids=[main_guild],
+    )
     @commands.has_permissions(manage_roles=True)
     async def add(
         self,
@@ -693,7 +701,9 @@ class Level(commands.Cog):
             inter, text=f"{role.mention} is already in the role reward list"
         )
 
-    @role_reward.sub_command(guild_ids=[main_guild], )
+    @role_reward.sub_command(
+        guild_ids=[main_guild],
+    )
     @commands.has_permissions(manage_roles=True)
     async def remove(
         self,
@@ -716,7 +726,9 @@ class Level(commands.Cog):
             inter, text=f"{role.mention} is not in the role reward list"
         )
 
-    @role_reward.sub_command(guild_ids=[main_guild], )
+    @role_reward.sub_command(
+        guild_ids=[main_guild],
+    )
     async def list(self, inter: ApplicationCommandInteraction):
         """List all role rewards"""
         sql = "SELECT * FROM role_rewards WHERE guild_id = ?"

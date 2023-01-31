@@ -21,7 +21,9 @@ class Animals(commands.Cog):
     async def animal(self, inter):
         pass
 
-    @animal.sub_command(guild_ids=[main_guild], name="cat", description="Get a random cat picture")
+    @animal.sub_command(
+        guild_ids=[main_guild], name="cat", description="Get a random cat picture"
+    )
     async def cat(self, inter):
         """Get a random cat picture!"""
         response = await self.bot.session.get("https://some-random-api.ml/animal/cat")
@@ -38,7 +40,9 @@ class Animals(commands.Cog):
         )
         await inter.response.send_message(f"**Fun Fact: **" + data["fact"], embed=embed)
 
-    @animal.sub_command(guild_ids=[main_guild], name="dog", description="Get a random dog picture")
+    @animal.sub_command(
+        guild_ids=[main_guild], name="dog", description="Get a random dog picture"
+    )
     async def dog(self, inter):
         """Get a random dog picture!"""
         response = await self.bot.session.get("https://some-random-api.ml/animal/dog")
@@ -55,7 +59,9 @@ class Animals(commands.Cog):
         )
         await inter.response.send_message("**Fun Fact: **" + data["fact"], embed=embed)
 
-    @animal.sub_command(guild_ids=[main_guild], name="bird", description="Get a random bird picture")
+    @animal.sub_command(
+        guild_ids=[main_guild], name="bird", description="Get a random bird picture"
+    )
     async def bird(self, inter):
         """Get a random bird picture!"""
         response = await self.bot.session.get("https://some-random-api.ml/animal/bird")
@@ -72,7 +78,9 @@ class Animals(commands.Cog):
         )
         await inter.response.send_message("**Fun Fact: **" + data["fact"], embed=embed)
 
-    @animal.sub_command(guild_ids=[main_guild], name="fox", description="Get a random fox picture")
+    @animal.sub_command(
+        guild_ids=[main_guild], name="fox", description="Get a random fox picture"
+    )
     async def fox(self, inter):
         """Get a random fox picture!"""
         response = await self.bot.session.get("https://some-random-api.ml/animal/fox")
@@ -89,7 +97,9 @@ class Animals(commands.Cog):
         )
         await inter.response.send_message("**Fun Fact: **" + data["fact"], embed=embed)
 
-    @animal.sub_command(guild_ids=[main_guild], name="panda", description="Get a random panda picture")
+    @animal.sub_command(
+        guild_ids=[main_guild], name="panda", description="Get a random panda picture"
+    )
     async def panda(self, inter):
         """Get a random panda picture!"""
         response = await self.bot.session.get("https://some-random-api.ml/animal/panda")
@@ -106,7 +116,9 @@ class Animals(commands.Cog):
         )
         await inter.response.send_message("**Fun Fact: **" + data["fact"], embed=embed)
 
-    @animal.sub_command(guild_ids=[main_guild], name="koala", description="Get a random cat picture")
+    @animal.sub_command(
+        guild_ids=[main_guild], name="koala", description="Get a random cat picture"
+    )
     async def koala(self, inter):
         """Get a random koala picture!"""
         response = await self.bot.session.get("https://some-random-api.ml/animal/koala")

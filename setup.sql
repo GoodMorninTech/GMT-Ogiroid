@@ -112,4 +112,13 @@ IF NOT EXISTS config
 
 DROP TABLE IF EXISTS xp_boosts_user;
 
-
+CREATE TABLE
+IF NOT EXISTS guild_news
+(
+    guild_id BIGINT,
+    frequency TEXT,
+    channel_id BIGINT,
+    news TEXT,
+    extras TEXT,
+    time TEXT
+);

@@ -137,3 +137,13 @@ class TimezoneModel:
     user_id: int
     timezone: str
     timezone_last_changed: int
+
+
+@dataclass
+class GuildNewsModel:
+    guild_id: int
+    frequency: str
+    channel_id: int
+    news: str
+    extras: str
+    time: str

@@ -37,6 +37,10 @@ class BirthdayException(BotException):
     pass
 
 
+class GuildNewsException(BotException):
+    pass
+
+
 class TagNotFound(TagException, KeyError):
     pass
 
@@ -100,4 +104,12 @@ class LevelingSystemError(BotException):
 
 
 class UserAlreadyExists(BirthdayException):
+    pass
+
+
+class GuildNewsAlreadyExists(GuildNewsException):
+    pass
+
+
+class GuildNewsNotFound(GuildNewsException):
     pass
