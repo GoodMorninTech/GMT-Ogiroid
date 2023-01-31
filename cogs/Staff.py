@@ -19,7 +19,6 @@ from utils.shortcuts import sucEmb, errorEmb, warning_embed, QuickEmb, warnings_
 from utils.config import Guilds
 
 main_guild = Guilds.main_guild
-print(main_guild)
 
 
 class StaffVote(disnake.ui.Modal):
