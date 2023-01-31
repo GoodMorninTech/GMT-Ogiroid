@@ -10,6 +10,9 @@ from disnake import ApplicationCommandInteraction
 from disnake.ext import commands
 
 from utils.bot import OGIROID
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class ImageCommands(commands.Cog, name="Image"):
@@ -19,6 +22,7 @@ class ImageCommands(commands.Cog, name="Image"):
         self.bot = bot
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="trigger",
         brief="Trigger",
         description="For when you're feeling triggered.",
@@ -37,6 +41,7 @@ class ImageCommands(commands.Cog, name="Image"):
         await inter.send(file=disnake.File(imageData, "triggered.gif"))
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="sus",
         brief="Sus-Inator4200",
         description="Check if your friend is kinda ***SUS***",
@@ -60,7 +65,10 @@ class ImageCommands(commands.Cog, name="Image"):
             await inter.send("Couldnt get image :(")
 
     @commands.slash_command(
-        name="invert", brief="invert", description="Invert the colours of your icon"
+        guild_ids=[main_guild],
+        name="invert",
+        brief="invert",
+        description="Invert the colours of your icon",
     )
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def invert(
@@ -76,7 +84,10 @@ class ImageCommands(commands.Cog, name="Image"):
         await inter.send(file=disnake.File(imageData, "invert.png"))
 
     @commands.slash_command(
-        name="pixelate", brief="pixelate", description="Turn yourself into 144p!"
+        guild_ids=[main_guild],
+        name="pixelate",
+        brief="pixelate",
+        description="Turn yourself into 144p!",
     )
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def pixelate(
@@ -91,7 +102,9 @@ class ImageCommands(commands.Cog, name="Image"):
         imageData = io.BytesIO(await trigImg.read())
         await inter.send(file=disnake.File(imageData, "pixelate.png"))
 
-    @commands.slash_command(name="jail", brief="jail", description="Go to jail!")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="jail", brief="jail", description="Go to jail!"
+    )
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def jail(
         self, inter: ApplicationCommandInteraction, member: disnake.Member = None
@@ -106,7 +119,11 @@ class ImageCommands(commands.Cog, name="Image"):
         imageData = io.BytesIO(await trigImg.read())
         await inter.send(file=disnake.File(imageData, "jail.png"))
 
-    @commands.slash_command(name="urltoqr", description="Converts a URL to a QR code.")
+    @commands.slash_command(
+        guild_ids=[main_guild],
+        name="urltoqr",
+        description="Converts a URL to a QR code.",
+    )
     async def urltoqr(self, inter: ApplicationCommandInteraction, url: str, size: int):
         url = url.replace("http://", "").replace("https://", "")
         qr = (
@@ -144,6 +161,7 @@ class ImageCommands(commands.Cog, name="Image"):
 
     # Command to get information about a Quote user
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="quote",
         description="Generates an image with a quote and random background",
     )

@@ -11,6 +11,9 @@ from disnake.ext.commands import *
 from utils.CONSTANTS import IGNORE_EXCEPTIONS
 from utils.bot import OGIROID
 from utils.shortcuts import errorEmb, permsEmb
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class ErrorHandler(Cog):

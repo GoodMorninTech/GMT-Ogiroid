@@ -14,6 +14,9 @@ from utils import checks
 from utils.assorted import traceback_maker
 from utils.bot import OGIROID
 from utils.pagination import CreatePaginator
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Dev(Cog):
@@ -31,7 +34,9 @@ class Dev(Cog):
         # remove `foo`
         return content.strip("` \n")
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @checks.is_dev()
     async def pyeval(self, inter, *, body: str):
         """Evaluates a code snippet"""
@@ -101,7 +106,9 @@ class Dev(Cog):
             if option.startswith(inter.data.options[0].value)
         ]
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @checks.is_dev()
     async def say(
         self,
@@ -121,7 +128,9 @@ class Dev(Cog):
         else:
             await t_channel.send(f"{what_to_say}")
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @checks.is_dev()
     async def load(
         self,
@@ -136,7 +145,9 @@ class Dev(Cog):
             return await inter.send(traceback_maker(e))
         await inter.send(f"Loaded extension **{name}.py**")
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @checks.is_dev()
     async def unload(
         self,
@@ -151,7 +162,9 @@ class Dev(Cog):
             return await inter.send(traceback_maker(e))
         await inter.send(f"Unloaded extension **{name}.py**")
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @checks.is_dev()
     async def reload(
         self,
@@ -166,7 +179,9 @@ class Dev(Cog):
             return await inter.send(traceback_maker(e))
         await inter.send(f"Reloaded extension **{name}.py**")
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @checks.is_dev()
     async def reloadall(self, inter: ApplicationCommandInteraction):
         """Reloads all extensions."""
@@ -190,7 +205,9 @@ class Dev(Cog):
 
         await inter.send("Successfully reloaded all extensions")
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @checks.is_dev()
     async def reloadutils(
         self,
@@ -212,7 +229,7 @@ class Dev(Cog):
         await inter.send(f"Reloaded module **{name_maker}**")
 
     @checks.is_dev()
-    @commands.slash_command(description="Command ID help")
+    @commands.slash_command(guild_ids=[main_guild], description="Command ID help")
     async def dev_help(self, inter):
         embeds = []
 

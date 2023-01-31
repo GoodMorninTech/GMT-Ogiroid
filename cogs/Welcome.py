@@ -5,6 +5,9 @@ import disnake
 from disnake.ext.commands import Cog
 
 from utils.bot import OGIROID
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Welcome(Cog):

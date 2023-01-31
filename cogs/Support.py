@@ -3,6 +3,9 @@ from disnake import TextInputStyle, Option, ApplicationCommandInteraction
 from disnake.ext import commands
 
 from utils.bot import OGIROID
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class BugModal(disnake.ui.Modal):
@@ -140,6 +143,7 @@ class BotSupport(commands.Cog, name="Bot Support"):
         self.bot = bot
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="reportbug",
         description="Report a bug",
     )
@@ -147,6 +151,7 @@ class BotSupport(commands.Cog, name="Bot Support"):
         await inter.response.send_modal(modal=BugModal(self.bot))
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="suggest",
         description="Suggest something for the bot",
     )

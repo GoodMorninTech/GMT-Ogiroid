@@ -13,6 +13,9 @@ from utils.assorted import getPosition
 from utils.bot import OGIROID
 from utils.exceptions import UserNotFound, UsersNotFound
 from utils.shortcuts import QuickEmb, errorEmb
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Trivia(commands.Cog, name="Trivia"):
@@ -26,7 +29,9 @@ class Trivia(commands.Cog, name="Trivia"):
         await self.bot.wait_until_ready()
         self.flag_quiz: FlagQuizHandler = FlagQuizHandler(self.bot, self.bot.db)
 
-    @commands.slash_command(name="flagquiz", description="Guess the flags.")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="flagquiz", description="Guess the flags."
+    )
     async def guess_the_flag(self, inter):
         await inter.response.defer()
         await QuickEmb(inter, "Starting the quiz..").send()
@@ -166,7 +171,9 @@ class Trivia(commands.Cog, name="Trivia"):
         )
 
     @commands.slash_command(
-        name="flagquiz-leaderboard", description="Leaderboard for the flag quiz."
+        guild_ids=[main_guild],
+        name="flagquiz-leaderboard",
+        description="Leaderboard for the flag quiz.",
     )
     async def flag_quiz_leaderboard(
         self,
@@ -212,6 +219,7 @@ class Trivia(commands.Cog, name="Trivia"):
         await inter.send(embed=embed)
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="flagquiz-user",
         description="Get Flag Quiz User Stats about a particular user.",
     )
@@ -246,6 +254,7 @@ class Trivia(commands.Cog, name="Trivia"):
         await inter.send(embed=embed)
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="trivia",
         description="A quick bit of Trivia.",
         options=[

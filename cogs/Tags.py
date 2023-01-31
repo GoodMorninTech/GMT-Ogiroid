@@ -13,6 +13,9 @@ from utils.exceptions import *
 from utils.models import *
 from utils.pagination import CreatePaginator
 from utils.shortcuts import QuickEmb, manage_messages_perms, errorEmb
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Tags(commands.Cog, name="Tags"):
@@ -40,20 +43,24 @@ class Tags(commands.Cog, name="Tags"):
     def db(self):
         return self.bot.db
 
-    @commands.slash_command(description="Tags base command")
+    @commands.slash_command(guild_ids=[main_guild], description="Tags base command")
     @commands.guild_only()
     async def tag(self, inter):
         pass
 
     @commands.slash_command(
-        name="t", aliases=["tg"], description="An alias for `/tag get`", hidden=True
+        guild_ids=[main_guild],
+        name="t",
+        aliases=["tg"],
+        description="An alias for `/tag get`",
+        hidden=True,
     )
     async def get_tag(
         self, inter: ApplicationCommandInteraction, *, name: str, embeded: bool = False
     ):
         return await self.get(inter, name, embeded)
 
-    @tag.sub_command(name="get", description="Gets you the tags value")
+    @tag.sub_command(guild_ids=[main_guild], name="get", description="Gets you the tags value")
     @commands.guild_only()
     async def get(
         self, inter: ApplicationCommandInteraction, name: str, embeded: bool = False
@@ -82,12 +89,12 @@ class Tags(commands.Cog, name="Tags"):
         except TagNotFound:
             await errorEmb(inter, f"tag {name} does not exist")
 
-    @tag.sub_command(name="random", description="Gets a random tag")
+    @tag.sub_command(guild_ids=[main_guild], name="random", description="Gets a random tag")
     async def random(self, inter):
         tag = await self.tags.random()
         return await self.get(inter, tag)
 
-    @tag.sub_command(name="create", description="Creates a tag")
+    @tag.sub_command(guild_ids=[main_guild], name="create", description="Creates a tag")
     @commands.guild_only()
     @commands.cooldown(1, 60, commands.BucketType.user)
     async def create(
@@ -127,7 +134,7 @@ class Tags(commands.Cog, name="Tags"):
         except TagAlreadyExists:
             return await errorEmb(inter, f"tag {name} already exists")
 
-    @tag.sub_command(name="edit", description="Edits the tag")
+    @tag.sub_command(guild_ids=[main_guild], name="edit", description="Edits the tag")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def edit(
@@ -155,7 +162,7 @@ class Tags(commands.Cog, name="Tags"):
         except TagNotFound:
             return await errorEmb(inter, f"tag {name} does not exist")
 
-    @tag.sub_command(name="transfer", description="Transfers the tag's owner")
+    @tag.sub_command(guild_ids=[main_guild], name="transfer", description="Transfers the tag's owner")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def transfer(
@@ -180,7 +187,7 @@ class Tags(commands.Cog, name="Tags"):
         except TagNotFound:
             return await errorEmb(inter, f"tag {name} does not exist")
 
-    @tag.sub_command(
+    @tag.sub_command(guild_ids=[main_guild], 
         name="claim",
         description="Claims ownership of the tag if the owner isn't in the guild",
     )
@@ -220,7 +227,7 @@ class Tags(commands.Cog, name="Tags"):
         except TagNotFound:
             return await errorEmb(inter, f"tag {name} does not exist")
 
-    @tag.sub_command(name="delete", description="Deletes the tag")
+    @tag.sub_command(guild_ids=[main_guild], name="delete", description="Deletes the tag")
     @commands.guild_only()
     @commands.cooldown(1, 180, commands.BucketType.user)
     async def deltag(self, inter: ApplicationCommandInteraction, name):
@@ -240,7 +247,7 @@ class Tags(commands.Cog, name="Tags"):
         except TagNotFound:
             return await errorEmb(inter, f"tag {name} does not exist")
 
-    @tag.sub_command(name="info", description="Gives you the tags info")
+    @tag.sub_command(guild_ids=[main_guild], name="info", description="Gives you the tags info")
     @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def info(self, inter: ApplicationCommandInteraction, name):
@@ -264,7 +271,7 @@ class Tags(commands.Cog, name="Tags"):
         except TagNotFound:
             return await errorEmb(inter, f"tag {name} does not exist")
 
-    @tag.sub_command(name="list", description="Lists tags")
+    @tag.sub_command(guild_ids=[main_guild], name="list", description="Lists tags")
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.channel)
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -317,7 +324,7 @@ class Tags(commands.Cog, name="Tags"):
         tag_embs.insert(0, start_emb)
         await ctx.send(embed=tag_embs[0], view=CreatePaginator(tag_embs, ctx.author.id))
 
-    @tag.sub_command(name="rename", description="Renames a tag")
+    @tag.sub_command(guild_ids=[main_guild], name="rename", description="Renames a tag")
     @commands.guild_only()
     async def rename(self, inter, name, new_name):
         try:
@@ -353,7 +360,7 @@ class Tags(commands.Cog, name="Tags"):
                 inter, f"A tag with the name {new_name} already exists"
             )
 
-    @tag.sub_command(name="help", description="Help for the tag system")
+    @tag.sub_command(guild_ids=[main_guild], name="help", description="Help for the tag system")
     @commands.guild_only()
     async def help(self, ctx):
         emb = Embed(title="Tag Help", color=self.bot.config.colors.invis)
@@ -380,7 +387,7 @@ class Tags(commands.Cog, name="Tags"):
     async def alias(self, inter):
         pass
 
-    @alias.sub_command(name="add", description="Adds an alias to a tag")
+    @alias.sub_command(guild_ids=[main_guild], name="add", description="Adds an alias to a tag")
     @commands.guild_only()
     async def add_alias(self, inter, name, alias):
         try:
@@ -415,7 +422,7 @@ class Tags(commands.Cog, name="Tags"):
         except AliasLimitReached:
             return await errorEmb(inter, "You can only have 10 aliases per tag")
 
-    @alias.sub_command(name="remove", description="Removes an alias from a tag")
+    @alias.sub_command(guild_ids=[main_guild], name="remove", description="Removes an alias from a tag")
     @commands.guild_only()
     async def remove_alias(self, inter, name, alias):
         try:

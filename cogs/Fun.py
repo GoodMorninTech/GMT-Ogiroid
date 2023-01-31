@@ -18,6 +18,9 @@ from utils.assorted import renderBar
 from utils.bot import OGIROID
 from utils.http import HTTPSession
 from utils.shortcuts import errorEmb
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 load_dotenv("../secrets.env")
 
@@ -38,7 +41,9 @@ class Fun(commands.Cog):
             self.togetherControl = await DiscordTogether(TOKEN)
 
     @commands.slash_command(
-        name="spotify", description="Show what song a member is listening to on Spotify"
+        guild_ids=[main_guild],
+        name="spotify",
+        description="Show what song a member is listening to on Spotify",
     )
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.guild_only()
@@ -94,6 +99,7 @@ class Fun(commands.Cog):
         await inter.send(embed=e)
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="poll",
         description="Make a Poll enter a question atleast 2 options and upto 6 options.",
     )
@@ -137,7 +143,9 @@ class Fun(commands.Cog):
             await poll.add_reaction(emoji)
 
     @commands.slash_command(
-        name="youtube", description="Watch YouTube in a Discord VC with your friends"
+        guild_ids=[main_guild],
+        name="youtube",
+        description="Watch YouTube in a Discord VC with your friends",
     )
     async def youtube(self, inter):
         """Watch YouTube in a Discord VC with your friends"""
@@ -161,7 +169,9 @@ class Fun(commands.Cog):
                 ephemeral=True,
             )
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def joke(self, inter: ApplicationCommandInteraction):
         """Get a random joke!"""
@@ -175,7 +185,7 @@ class Fun(commands.Cog):
         await inter.send(embed=embed)
 
     @commands.slash_command(
-        name="beer", description="Give someone a beer! 🍻"
+        guild_ids=[main_guild], name="beer", description="Give someone a beer! 🍻"
     )  # Credit: AlexFlipNote - https://github.com/AlexFlipnote
     async def beer(
         self,
@@ -225,7 +235,7 @@ class Fun(commands.Cog):
             await msg.edit(content=beer_offer)
 
     @commands.slash_command(
-        aliases=["slots", "bet"]
+        guild_ids=[main_guild], aliases=["slots", "bet"]
     )  # Credit: AlexFlipNote - https://github.com/AlexFlipnote
     async def slot(self, inter):
         """Roll the slot machine"""
@@ -241,7 +251,10 @@ class Fun(commands.Cog):
             await inter.send(f"{slotmachine} No match, you lost 😢")
 
     @commands.slash_command(
-        name="8ball", brief="8ball", description="Ask the magic 8ball a question"
+        guild_ids=[main_guild],
+        name="8ball",
+        brief="8ball",
+        description="Ask the magic 8ball a question",
     )
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def eightball(self, inter: ApplicationCommandInteraction, *, question):
@@ -273,6 +286,7 @@ class Fun(commands.Cog):
         )
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="askogiroid",
         description="Ogiroid will guess the character you are thinking of.",
     )
@@ -390,7 +404,10 @@ class Fun(commands.Cog):
                 await errorEmb(inter, e)
 
     @commands.slash_command(
-        name="bored", brief="activity", description="Returns an activity"
+        guild_ids=[main_guild],
+        name="bored",
+        brief="activity",
+        description="Returns an activity",
     )
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def bored(self, inter):
@@ -403,12 +420,14 @@ class Fun(commands.Cog):
                 await inter.send(activity["activity"])
 
     @commands.slash_command(
-        name="morse", description="Encode text into morse code and decode morse code."
+        guild_ids=[main_guild],
+        name="morse",
+        description="Encode text into morse code and decode morse code.",
     )
     async def morse(self, inter):
         pass
 
-    @morse.sub_command(name="encode", description="Encodes text into morse code.")
+    @morse.sub_command(guild_ids=[main_guild], name="encode", description="Encodes text into morse code.")
     async def encode(self, inter: ApplicationCommandInteraction, text: str):
         encoded_list = []
 
@@ -421,7 +440,7 @@ class Fun(commands.Cog):
         encoded_string = " ".join(encoded_list)
         await inter.send(f"``{encoded_string}``")
 
-    @morse.sub_command(name="decode", description="Decodes Morse Code into Text.")
+    @morse.sub_command(guild_ids=[main_guild], name="decode", description="Decodes Morse Code into Text.")
     async def decode(self, inter: ApplicationCommandInteraction, morse_code):
         decoded_list = []
         morse_list = morse_code.split()
@@ -435,12 +454,14 @@ class Fun(commands.Cog):
         decoded_string = "".join(decoded_list)
         await inter.send(f"``{decoded_string}``")
 
-    @commands.slash_command(description="Get Pokémon related information!")
+    @commands.slash_command(
+        guild_ids=[main_guild], description="Get Pokémon related information!"
+    )
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def pokemon(self, inter):
         pass
 
-    @pokemon.sub_command(name="info", description="Get information about a Pokémon.")
+    @pokemon.sub_command(guild_ids=[main_guild], name="info", description="Get information about a Pokémon.")
     async def info(
         self,
         inter: ApplicationCommandInteraction,
@@ -471,7 +492,9 @@ class Fun(commands.Cog):
             return await errorEmb(inter, f"{key}")
         return await inter.send(embed=embed)
 
-    @commands.slash_command(name="urlshortner", description="Shortens a URL.")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="urlshortner", description="Shortens a URL."
+    )
     async def urlshortner(self, inter: ApplicationCommandInteraction, url: str):
         # checking if url starts with http:// or https://, if it does not, adding https:// towards the start
         if not (url.startswith("http://") or url.startswith("https://")):

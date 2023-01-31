@@ -5,6 +5,9 @@ from utils.bot import OGIROID
 from utils.exceptions import CityNotFound
 from utils.shortcuts import errorEmb
 from utils.wrappers.OpenWeatherMap import OpenWeatherAPI
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Info(commands.Cog):
@@ -16,6 +19,7 @@ class Info(commands.Cog):
         )
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         description="Get current weather for specific city",
     )
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -60,7 +64,10 @@ class Info(commands.Cog):
         else:
             await inter.send(embed=e)
 
-    @commands.slash_command(description="Stats about the commands that have been ran")
+    @commands.slash_command(
+        guild_ids=[main_guild],
+        description="Stats about the commands that have been ran",
+    )
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def cmdstats(self, inter):
         cmdsran = self.bot.commands_ran

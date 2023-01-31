@@ -35,6 +35,9 @@ from utils.exceptions import LevelingSystemError, UserNotFound
 from utils.models import User, RoleReward
 from utils.pagination import LeaderboardView
 from utils.shortcuts import errorEmb, sucEmb, get_expiry
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 FakeGuild = namedtuple("FakeGuild", "id")
 
@@ -458,7 +461,7 @@ class Level(commands.Cog):
         if not self.bot.ready_:
             print("[Levels] Ready")
 
-    @commands.slash_command(description="XP boost base command")
+    @commands.slash_command(guild_ids=[main_guild], description="XP boost base command")
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
     async def xp_boost(self, inter: ApplicationCommandInteraction):
@@ -466,7 +469,7 @@ class Level(commands.Cog):
 
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
-    @xp_boost.sub_command()
+    @xp_boost.sub_command(guild_ids=[main_guild], )
     async def active(self, inter: ApplicationCommandInteraction, active: bool):
         """Enable or disable xp boost"""
         await self.bot.db.execute(
@@ -480,7 +483,7 @@ class Level(commands.Cog):
 
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
-    @xp_boost.sub_command()
+    @xp_boost.sub_command(guild_ids=[main_guild], )
     async def get(self, inter: ApplicationCommandInteraction):
         async with self.bot.db.execute(
             "SELECT * FROM config WHERE guild_id = ?", (inter.guild.id,)
@@ -501,7 +504,7 @@ class Level(commands.Cog):
 
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
-    @xp_boost.sub_command()
+    @xp_boost.sub_command(guild_ids=[main_guild], )
     async def set(
         self,
         inter: ApplicationCommandInteraction,
@@ -531,7 +534,9 @@ class Level(commands.Cog):
             f"Successfully set the xp boost to {amount}x it will expire {get_expiry(expires)} "
         )
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @commands.guild_only()
     async def rank(
         self, inter: ApplicationCommandInteraction, user: Optional[Member] = None
@@ -562,7 +567,9 @@ class Level(commands.Cog):
     async def random_xp():
         return random.choice(xp_probability)
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @commands.guild_only()
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def leaderboard(self, inter: ApplicationCommandInteraction):
@@ -618,7 +625,9 @@ class Level(commands.Cog):
             ),
         )
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @commands.guild_only()
     @commands.has_any_role("Staff", "staff")
     async def set_lvl(
@@ -644,14 +653,16 @@ class Level(commands.Cog):
             inter, text=f"Set {user.mention}'s level to {level}", ephemeral=False
         )
 
-    @commands.slash_command(description="Role rewards base command")
+    @commands.slash_command(
+        guild_ids=[main_guild], description="Role rewards base command"
+    )
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
     async def role_reward(self, inter: ApplicationCommandInteraction):
 
         return
 
-    @role_reward.sub_command()
+    @role_reward.sub_command(guild_ids=[main_guild], )
     @commands.has_permissions(manage_roles=True)
     async def add(
         self,
@@ -682,7 +693,7 @@ class Level(commands.Cog):
             inter, text=f"{role.mention} is already in the role reward list"
         )
 
-    @role_reward.sub_command()
+    @role_reward.sub_command(guild_ids=[main_guild], )
     @commands.has_permissions(manage_roles=True)
     async def remove(
         self,
@@ -705,7 +716,7 @@ class Level(commands.Cog):
             inter, text=f"{role.mention} is not in the role reward list"
         )
 
-    @role_reward.sub_command()
+    @role_reward.sub_command(guild_ids=[main_guild], )
     async def list(self, inter: ApplicationCommandInteraction):
         """List all role rewards"""
         sql = "SELECT * FROM role_rewards WHERE guild_id = ?"

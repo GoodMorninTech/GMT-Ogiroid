@@ -3,6 +3,9 @@ from disnake.ext import commands
 
 from utils.bot import OGIROID
 from utils.shortcuts import QuickEmb, errorEmb
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Math(commands.Cog):
@@ -11,7 +14,9 @@ class Math(commands.Cog):
     def __init__(self, bot: OGIROID):
         self.bot = bot
 
-    @commands.slash_command(description="Evaluates a math equation.")
+    @commands.slash_command(
+        guild_ids=[main_guild], description="Evaluates a math equation."
+    )
     async def math(self, inter, equation):
         """Evaluates a math equation"""
         equation = equation.replace("×", "*")
@@ -44,7 +49,9 @@ class Math(commands.Cog):
             await QuickEmb(inter, f"Result: ```{answer}```").success().send()
 
     @commands.slash_command(
-        name="mathhelp", description="Help for the ``/math`` command"
+        guild_ids=[main_guild],
+        name="mathhelp",
+        description="Help for the ``/math`` command",
     )
     async def math_help(self, inter):
         await QuickEmb(

@@ -40,7 +40,7 @@ class Channels:
 
 @dataclass
 class Guilds:
-    # Lewis server
+    # GMT server
     main_guild: int = 1052669138000158820
 
     @classmethod
@@ -62,7 +62,6 @@ class Roles:
 
 @dataclass
 class Emojis:
-
     @classmethod
     def dev(cls):
         return cls

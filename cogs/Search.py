@@ -1,6 +1,9 @@
 from disnake.ext import commands
 
 from utils.bot import OGIROID
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Search(commands.Cog):
@@ -9,7 +12,9 @@ class Search(commands.Cog):
     def __init__(self, bot: OGIROID):
         self.bot = bot
 
-    @commands.slash_command(description="Returns a search for your query")
+    @commands.slash_command(
+        guild_ids=[main_guild], description="Returns a search for your query"
+    )
     async def search(
         self,
         inter,
@@ -31,6 +36,7 @@ class Search(commands.Cog):
             await inter.send(f"https://letmegooglethat.com/?q={query}")
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="feeling-lucky",
         description="Returns the first google result for your query",
     )
@@ -39,7 +45,10 @@ class Search(commands.Cog):
         query = query.rstrip().replace(" ", "+")
         await inter.send(f"https://www.google.com/search?q={query}&btnI")
 
-    @commands.slash_command(description="Returns a StackOverflow search for your query")
+    @commands.slash_command(
+        guild_ids=[main_guild],
+        description="Returns a StackOverflow search for your query",
+    )
     async def stackoverflow(self, inter, query):
         """Searches StackOverflow for the query"""
         query = query.rstrip().replace(" ", "+")

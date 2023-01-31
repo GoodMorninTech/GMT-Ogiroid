@@ -16,6 +16,9 @@ from utils.DBhandlers import RolesHandler, WarningHandler
 from utils.bot import OGIROID
 from utils.exceptions import ReactionAlreadyExists, ReactionNotFound
 from utils.shortcuts import sucEmb, errorEmb, warning_embed, QuickEmb, warnings_embed
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class StaffVote(disnake.ui.Modal):
@@ -75,7 +78,9 @@ class Staff(commands.Cog):
         self.warning: WarningHandler = WarningHandler(self.bot, self.bot.db)
         await self.reaction_roles.startup()
 
-    @commands.slash_command(name="ban", description="Bans a user from the server.")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="ban", description="Bans a user from the server."
+    )
     @commands.has_permissions(ban_members=True)
     @commands.guild_only()
     async def ban(
@@ -98,7 +103,9 @@ class Staff(commands.Cog):
         await sucEmb(inter, "User has been banned successfully!")
 
     @commands.slash_command(
-        name="softban", description="Softbans a user from the server."
+        guild_ids=[main_guild],
+        name="softban",
+        description="Softbans a user from the server.",
     )
     @commands.has_permissions(ban_members=True)
     @commands.guild_only()
@@ -118,7 +125,9 @@ class Staff(commands.Cog):
         await asyncio.sleep(5)
         await inter.guild.unban(user=user, reason="softban unban")
 
-    @commands.slash_command(name="kick", description="Kicks a user from the server.")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="kick", description="Kicks a user from the server."
+    )
     @commands.has_permissions(kick_members=True)
     @commands.guild_only()
     async def kick(
@@ -131,7 +140,11 @@ class Staff(commands.Cog):
         await member.kick(reason=reason)
         await sucEmb(inter, "User has been kicked successfully!")
 
-    @commands.slash_command(name="unban", description="Unbans a user from the server.")
+    @commands.slash_command(
+        guild_ids=[main_guild],
+        name="unban",
+        description="Unbans a user from the server.",
+    )
     @commands.has_permissions(ban_members=True)
     @commands.guild_only()
     async def unban(
@@ -148,7 +161,9 @@ class Staff(commands.Cog):
         await sucEmb(inter, "User has been unbanned successfully!")
 
     @commands.slash_command(
-        name="mute", description="'timeout's a user from the server."
+        guild_ids=[main_guild],
+        name="mute",
+        description="'timeout's a user from the server.",
     )
     @commands.has_permissions(manage_roles=True)
     @commands.guild_only()
@@ -189,7 +204,9 @@ class Staff(commands.Cog):
         await sucEmb(inter, "User has been muted successfully!")
 
     @commands.slash_command(
-        name="unmute", description="Unmutes a user from the server."
+        guild_ids=[main_guild],
+        name="unmute",
+        description="Unmutes a user from the server.",
     )
     @commands.has_permissions(manage_roles=True)
     @commands.guild_only()
@@ -209,7 +226,9 @@ class Staff(commands.Cog):
 
         await sucEmb(inter, "User has been unmuted successfully!")
 
-    @commands.slash_command(name="warn", description="Warns a user from the server.")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="warn", description="Warns a user from the server."
+    )
     @commands.has_permissions(manage_roles=True)
     @commands.guild_only()
     async def warn(
@@ -225,6 +244,7 @@ class Staff(commands.Cog):
         await warning_embed(inter, user=member, reason=reason)
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="removewarning",
         description="Removes a warning from a user from the server.",
     )
@@ -281,7 +301,9 @@ class Staff(commands.Cog):
             await msg.delete()
 
     @commands.slash_command(
-        name="warnings", description="Shows the warnings of a user from the server."
+        guild_ids=[main_guild],
+        name="warnings",
+        description="Shows the warnings of a user from the server.",
     )
     @commands.has_permissions(manage_roles=True)
     @commands.guild_only()
@@ -295,7 +317,9 @@ class Staff(commands.Cog):
 
         await warnings_embed(inter, member=member, warnings=warnings)
 
-    @commands.slash_command(description="Steals an emoji from a different server.")
+    @commands.slash_command(
+        guild_ids=[main_guild], description="Steals an emoji from a different server."
+    )
     @commands.guild_only()
     @commands.has_permissions(manage_emojis=True)
     async def stealemoji(
@@ -325,7 +349,9 @@ class Staff(commands.Cog):
         except Exception as e:
             await inter.send(str(e))
 
-    @commands.slash_command(description="Adds an image to the server emojis")
+    @commands.slash_command(
+        guild_ids=[main_guild], description="Adds an image to the server emojis"
+    )
     @commands.guild_only()
     @commands.has_permissions(manage_emojis=True)
     async def addemoji(
@@ -368,7 +394,7 @@ class Staff(commands.Cog):
         except ValueError:
             pass
 
-    @commands.slash_command(name="prune")
+    @commands.slash_command(guild_ids=[main_guild], name="prune")
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def prune(self, inter: ApplicationCommandInteraction, amount: int):
@@ -380,7 +406,7 @@ class Staff(commands.Cog):
         await inter.channel.purge(limit=amount)
         await inter.send(f"Deleted {amount} messages successfully!", ephemeral=True)
 
-    @commands.slash_command(name="channellock")
+    @commands.slash_command(guild_ids=[main_guild], name="channellock")
     @commands.guild_only()
     @commands.has_permissions(manage_channels=True)
     async def channellock(
@@ -399,7 +425,7 @@ class Staff(commands.Cog):
         )
         await inter.send(f"🔒 Locked {channel.mention} successfully!")
 
-    @commands.slash_command(name="channelunlock")
+    @commands.slash_command(guild_ids=[main_guild], name="channelunlock")
     @commands.guild_only()
     @commands.has_permissions(manage_channels=True)
     async def channelunlock(
@@ -420,7 +446,9 @@ class Staff(commands.Cog):
 
     # Reaction Roles with buttons:
     @commands.slash_command(
-        name="addreactionrole", description="Add a reaction based role to a message"
+        guild_ids=[main_guild],
+        name="addreactionrole",
+        description="Add a reaction based role to a message",
     )
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
@@ -448,6 +476,7 @@ class Staff(commands.Cog):
         await sucEmb(inter, f"Added!")
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="removereactionrole",
         description="Remove a reaction based role from a message",
     )
@@ -502,6 +531,7 @@ class Staff(commands.Cog):
                 )
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="initialise-message",
         description="Create a Message with Buttons where users click them and get roles.",
     )
@@ -562,6 +592,7 @@ class Staff(commands.Cog):
         )
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="add-button",
         description="Add a button to a previously created message."
         " Use /initialise-message for that.",
@@ -629,6 +660,7 @@ class Staff(commands.Cog):
         await sucEmb(inter, "Added Button")
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="edit-message",
         description="Edit a message the bot sent(Role messages with buttons only).",
     )
@@ -678,6 +710,7 @@ class Staff(commands.Cog):
         await sucEmb(inter, "Edited!")
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="delete-message",
         description="Delete a message the bot sent(Role messages with buttons only).",
     )
@@ -713,7 +746,9 @@ class Staff(commands.Cog):
         await sucEmb(inter, "Deleted!")
 
     @commands.slash_command(
-        name="remove-button", description="Remove a button from a message."
+        guild_ids=[main_guild],
+        name="remove-button",
+        description="Remove a button from a message.",
     )
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
@@ -788,7 +823,9 @@ class Staff(commands.Cog):
             )
             return await sucEmb(inter, "Removed Role")
 
-    @commands.slash_command(name="staffvote", description="Propose a Staff Vote.")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="staffvote", description="Propose a Staff Vote."
+    )
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def staffvote(self, inter):
@@ -796,7 +833,9 @@ class Staff(commands.Cog):
         await inter.response.send_modal(modal=StaffVote(self.bot))
 
     @commands.slash_command(
-        name="staffhelp", description="Get the help for the staff commands."
+        guild_ids=[main_guild],
+        name="staffhelp",
+        description="Get the help for the staff commands.",
     )
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)

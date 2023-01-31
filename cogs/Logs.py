@@ -5,6 +5,9 @@ from disnake import Embed
 from disnake.ext.commands import Cog
 
 from utils.bot import OGIROID
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 import typing as t
 
@@ -208,6 +211,8 @@ class Log(Cog):
     @Cog.listener()
     async def on_guild_role_create(self, role: disnake.Role):
         """Sends a message in log channel when role is created."""
+        if not role.guild.id == main_guild:
+            return
         title = "Role created"
         content = f"{role.mention}(``{role.id}``) has been created."
 
@@ -223,6 +228,8 @@ class Log(Cog):
     @Cog.listener()
     async def on_guild_role_delete(self, role: disnake.Role):
         """Sends a message in log channel when role gets deleted."""
+        if not role.guild.id == main_guild:
+            return
         embed = Embed(
             title="Role deleted",
             description=f"**{role.name}**(``{role.id}``) has been deleted.",
@@ -235,6 +242,8 @@ class Log(Cog):
     @Cog.listener()
     async def on_guild_role_update(self, before: disnake.Role, after: disnake.Role):
         """Sends a message in log channel when role edites in the server."""
+        if not before.guild.id == main_guild:
+            return
 
         title = "Role edited"
 
@@ -324,6 +333,8 @@ class Log(Cog):
     @Cog.listener()
     async def on_guild_update(self, before: disnake.Guild, after: disnake.Guild):
         """Sends a message in log channel when guild updates."""
+        if not before.id == main_guild:
+            return
         if before.name != after.name:
             message = (
                 f"Server name has been changed:\n"
@@ -358,6 +369,8 @@ class Log(Cog):
     @Cog.listener()
     async def on_thread_create(self, thread: disnake.Thread):
         """Sends a message in log channel when thread creates."""
+        if not thread.guild.id == main_guild:
+            return
 
         embed = Embed(
             title="Thread created",
@@ -371,6 +384,8 @@ class Log(Cog):
     @Cog.listener()
     async def on_thread_update(self, before: disnake.Thread, after: disnake.Thread):
         """Sends a message in log channel when thread updates."""
+        if not after.guild.id == main_guild:
+            return
         embed = Embed(
             title="Thread name edited",
             description=(
@@ -387,6 +402,9 @@ class Log(Cog):
     @Cog.listener()
     async def on_thread_delete(self, thread: disnake.Thread):
         """Sends a message in log channel when thread deletes."""
+        if not thread.guild.id == main_guild:
+            return
+
         embed = Embed(
             title="Thread deleted",
             description=f"Thread **{thread.name}** (`{thread.id}`) in {thread.parent.mention} (`{thread.parent.id}`) deleted.",
@@ -401,6 +419,8 @@ class Log(Cog):
         self, guild: disnake.Guild, user: t.Union[disnake.User, disnake.Member]
     ):
         """Sends a message in log channel if member gets banned from the server."""
+        if not guild.id == main_guild:
+            return
 
         ban = await guild.fetch_ban(user)
 
@@ -416,6 +436,8 @@ class Log(Cog):
     @Cog.listener()
     async def on_member_unban(self, guild: disnake.Guild, user: disnake.User):
         """Sends a message in log channel if member gets unbanned from the server."""
+        if not guild.id == main_guild:
+            return
         embed = Embed(
             title="Member unbanned",
             description=f"{user.mention}(``{user.id}``) has been unbanned.",

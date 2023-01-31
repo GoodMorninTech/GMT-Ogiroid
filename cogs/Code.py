@@ -8,6 +8,9 @@ from utils.CONSTANTS import VALID_CODE_LANGUAGES
 from utils.bot import OGIROID
 from utils.http import session
 from utils.shortcuts import errorEmb
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class CodeExec(Cog, name="Code"):
@@ -19,6 +22,7 @@ class CodeExec(Cog, name="Code"):
         self.bot = bot
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="code",
         description="Run code and get results instantly. Window for code will pop up.",
     )

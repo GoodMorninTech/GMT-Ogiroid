@@ -4,15 +4,17 @@ from io import BytesIO
 from better_profanity import profanity
 import disnake
 from disnake.ext import commands
-
 from utils.bot import OGIROID
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class AI(commands.Cog):
     def __init__(self, bot: OGIROID):
         self.bot = bot
 
-    @commands.slash_command(description="Generates ai art")
+    @commands.slash_command(guild_ids=[main_guild], description="Generates ai art")
     async def ai_art(self, inter: disnake.ApplicationCommandInteraction, text: str):
         if profanity.contains_profanity(text):
             return await inter.send(f"NSFW requests are not allowed!", ephemeral=True)

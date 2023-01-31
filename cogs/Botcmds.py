@@ -9,6 +9,9 @@ from disnake.utils import format_dt
 from utils.CONSTANTS import status, __VERSION__
 from utils.bot import OGIROID
 from utils.shortcuts import QuickEmb
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class plural:
@@ -32,7 +35,9 @@ class Commands(commands.Cog):
 
     # Can be deprecated since there is a server info command now and its specific to the Lewis's Server
     @commands.slash_command(
-        name="membercount", description="Get the member count of the server"
+        guild_ids=[main_guild],
+        name="membercount",
+        description="Get the member count of the server",
     )
     async def membercount(self, inter):
         """Count the members in the server"""
@@ -48,7 +53,9 @@ class Commands(commands.Cog):
         await inter.response.send_message(embed=embed)
 
     @commands.slash_command(
-        name="ping", description="Shows how fast the bot is replying to you!"
+        guild_ids=[main_guild],
+        name="ping",
+        description="Shows how fast the bot is replying to you!",
     )
     async def ping(self, inter):
         """Shows how fast the bot is replying to you!"""
@@ -85,7 +92,9 @@ class Commands(commands.Cog):
         )
         await inter.response.send_message(embed=embed)
 
-    @commands.slash_command(name="botinfo", description="Shows info about the bot!")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="botinfo", description="Shows info about the bot!"
+    )
     async def botinfo(self, inter):
         """Shows the info of the bot"""
         embed = disnake.Embed(
@@ -121,7 +130,9 @@ class Commands(commands.Cog):
         )
         await inter.send(embed=embed, components=button)
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     @commands.guild_only()
     async def serverinfo(self, inter, *, guild_id=None):
         """Shows info about the current server."""
@@ -241,7 +252,9 @@ class Commands(commands.Cog):
         e.set_footer(text=f'Created: {guild.created_at.strftime("%m/%d/%Y")}')
         await inter.send(embed=e)
 
-    @commands.slash_command()
+    @commands.slash_command(
+        guild_ids=[main_guild],
+    )
     async def whois(self, inter, *, user: disnake.Member = None):
         """Shows info about a user."""
         if user == None:
@@ -308,7 +321,9 @@ class Commands(commands.Cog):
 
         await inter.send(embed=e)
 
-    @commands.slash_command(name="avatar", description="Shows the avatar of a user.")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="avatar", description="Shows the avatar of a user."
+    )
     async def avatar(
         self, inter: disnake.ApplicationCommandInteraction, user: disnake.Member = None
     ):

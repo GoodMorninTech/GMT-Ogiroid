@@ -4,6 +4,9 @@ import string
 from disnake.ext import commands
 
 from utils.bot import OGIROID
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Password(commands.Cog):
@@ -13,6 +16,7 @@ class Password(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="password",
         aliases=["pass"],
         description="Generates a random password & DM's it!",

@@ -7,6 +7,9 @@ from disnake.ext import commands
 from utils.CONSTANTS import TICKET_PERMS
 from utils.bot import OGIROID
 from utils.shortcuts import errorEmb, sucEmb
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Tickets(commands.Cog):
@@ -45,7 +48,9 @@ class Tickets(commands.Cog):
         self.message = msg
 
     @commands.slash_command(
-        name="edit-ticket-message", description="Update the ticket message."
+        guild_ids=[main_guild],
+        name="edit-ticket-message",
+        description="Update the ticket message.",
     )
     @commands.guild_only()
     @commands.has_role("Staff")
@@ -120,14 +125,16 @@ class Tickets(commands.Cog):
             f"Created Ticket. Your ticket: {ticket.mention}", ephemeral=True
         )
 
-    @commands.slash_command(description="Close ticket")
+    @commands.slash_command(guild_ids=[main_guild], description="Close ticket")
     async def close(self, inter):
         if self.check_if_ticket_channel(inter):
             await inter.channel.delete()
         else:
             await errorEmb(inter, "This is not a ticket channel.")
 
-    @commands.slash_command(name="adduser", description="Add user to channel")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="adduser", description="Add user to channel"
+    )
     @commands.has_role("Staff")
     async def add_user(self, inter, member: disnake.Member):
         if self.check_if_ticket_channel(inter):
@@ -149,7 +156,11 @@ class Tickets(commands.Cog):
         else:
             await errorEmb(inter, "This is not a ticket channel.")
 
-    @commands.slash_command(name="removeuser", description="Remove user from channel")
+    @commands.slash_command(
+        guild_ids=[main_guild],
+        name="removeuser",
+        description="Remove user from channel",
+    )
     @commands.has_role("Staff")
     async def remove_user(self, inter, member: disnake.Member):
         if self.check_if_ticket_channel(inter):

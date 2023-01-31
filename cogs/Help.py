@@ -3,6 +3,9 @@ from disnake.ext import commands
 
 from utils.bot import OGIROID
 from utils.pagination import CreatePaginator
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class HelpCommand(commands.Cog, name="Help"):
@@ -12,7 +15,9 @@ class HelpCommand(commands.Cog, name="Help"):
         self.bot = bot
         self.COLOUR = 0xFFFFFF
 
-    @commands.slash_command(name="help", description="Lists all commands")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="help", description="Lists all commands"
+    )
     async def help(self, inter):
         """Lists all commands"""
         embeds = []

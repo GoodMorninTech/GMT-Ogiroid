@@ -4,6 +4,9 @@ from disnake.ext import commands
 from disnake.ext.commands import Cog
 
 from utils.bot import OGIROID
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Utilities(commands.Cog):
@@ -16,15 +19,21 @@ class Utilities(commands.Cog):
 
     @Cog.listener()
     async def on_message_delete(self, message):
+        if not message.guild.id == main_guild:
+            return
         self.delete_snipes[message.channel] = message
         self.delete_snipes_attachments[message.channel] = message.attachments
 
     @Cog.listener()
     async def on_message_edit(self, before, after):
+        if not before.guild.id == main_guild:
+            return
         self.edit_snipes[after.channel] = (before, after)
 
     @commands.slash_command(
-        name="snipe", description="Get the most recently deleted message in a channel"
+        guild_ids=[main_guild],
+        name="snipe",
+        description="Get the most recently deleted message in a channel",
     )
     async def snipe_group(self, inter: ApplicationCommandInteraction):
         """Get the most recently deleted message in a channel"""
@@ -58,6 +67,7 @@ class Utilities(commands.Cog):
                 await inter.send(embed=result, delete_after=15)
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="editsnipe",
         description="Get the most recently edited message in the channel, before and after.",
     )

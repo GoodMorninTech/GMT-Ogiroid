@@ -4,6 +4,9 @@ import disnake
 from disnake.ext import commands
 
 from utils.bot import OGIROID
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class Memes(commands.Cog):
@@ -12,7 +15,9 @@ class Memes(commands.Cog):
     def __init__(self, bot: OGIROID):
         self.bot = bot
 
-    @commands.slash_command(name="onlyfans", description="Lewis' OnlyFans")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="onlyfans", description="Lewis' OnlyFans"
+    )
     async def onlyfans(self, inter):
         """Lewis' Onlyfans"""
         await inter.send(
@@ -20,7 +25,10 @@ class Memes(commands.Cog):
         )
 
     @commands.slash_command(
-        name="meme", aliases=["dankmeme"], description="Random meme from r/memes"
+        guild_ids=[main_guild],
+        name="meme",
+        aliases=["dankmeme"],
+        description="Random meme from r/memes",
     )
     async def meme(self, inter):
         """Random meme from r/memes"""
@@ -28,6 +36,7 @@ class Memes(commands.Cog):
         await self.get_posts(inter, subreddit)
 
     @commands.slash_command(
+        guild_ids=[main_guild],
         name="programmerhumor",
         aliases=["progmeme", "programmermeme", "memeprogrammer"],
         description="Random meme from r/programmerhumor",
@@ -56,7 +65,9 @@ class Memes(commands.Cog):
         )
         await inter.response.send_message(embed=embed)
 
-    @commands.slash_command(name="freemoney", description="Get free money!")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="freemoney", description="Get free money!"
+    )
     async def free_money(self, inter):
         """Get free money"""
         await inter.send(

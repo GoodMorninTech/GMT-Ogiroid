@@ -2,6 +2,9 @@ import disnake
 from disnake.ext import commands
 
 from utils.bot import OGIROID
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 class GitHub(commands.Cog):
@@ -12,7 +15,9 @@ class GitHub(commands.Cog):
 
     # Command to get information about a GitHub user
     @commands.slash_command(
-        name="ghperson", description="Gets the Profile of the github person."
+        guild_ids=[main_guild],
+        name="ghperson",
+        description="Gets the Profile of the github person.",
     )
     async def ghperson(self, inter, ghuser: str):
         person_raw = await self.bot.session.get(
@@ -47,7 +52,9 @@ class GitHub(commands.Cog):
 
     # Command to get search for GitHub repositories:
     @commands.slash_command(
-        name="ghsearchrepo", description="Searches for the specified repo."
+        guild_ids=[main_guild],
+        name="ghsearchrepo",
+        description="Searches for the specified repo.",
     )
     async def ghsearchrepo(self, inter, query: str):
         pages = 1

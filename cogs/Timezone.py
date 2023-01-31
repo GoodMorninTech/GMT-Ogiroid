@@ -9,6 +9,9 @@ from utils.DBhandlers import TimezoneHandler
 from utils.bot import OGIROID
 from utils.exceptions import UserAlreadyExists, UserNotFound
 from utils.shortcuts import QuickEmb, sucEmb, errorEmb
+from utils.config import Guilds
+
+main_guild = Guilds.main_guild
 
 
 async def autocomplete_timezones(inter, user_input: str):
@@ -25,11 +28,13 @@ class Timezone(commands.Cog):
         if not self.bot.ready_:
             self.db_timezone: TimezoneHandler = TimezoneHandler(self.bot, self.bot.db)
 
-    @commands.slash_command(name="timezone", description="Timezone base command")
+    @commands.slash_command(
+        guild_ids=[main_guild], name="timezone", description="Timezone base command"
+    )
     async def timezone(self, inter: disnake.ApplicationCommandInteraction):
         pass
 
-    @timezone.sub_command(name="set", description="Set your timezone.")
+    @timezone.sub_command(guild_ids=[main_guild], name="set", description="Set your timezone.")
     async def set(
         self,
         inter,
@@ -61,7 +66,7 @@ class Timezone(commands.Cog):
             f" Its should be {dt.datetime.now(pytz.timezone(timezone)).strftime('%H:%M')} at your location.",
         )
 
-    @timezone.sub_command(name="edit", description="Edit your timezone.")
+    @timezone.sub_command(guild_ids=[main_guild], name="edit", description="Edit your timezone.")
     async def edit(
         self,
         inter,
@@ -92,7 +97,7 @@ class Timezone(commands.Cog):
         except UserNotFound:
             return await errorEmb(inter, "The User doesn't have a timezone set")
 
-    @timezone.sub_command(name="remove", description="Remove your timezone.")
+    @timezone.sub_command(guild_ids=[main_guild], name="remove", description="Remove your timezone.")
     async def remove(
         self,
         inter: disnake.ApplicationCommandInteraction,
@@ -104,7 +109,7 @@ class Timezone(commands.Cog):
 
         await sucEmb(inter, "The timezone has been removed")
 
-    @timezone.sub_command(name="get", description="Get the timezone of a user")
+    @timezone.sub_command(guild_ids=[main_guild], name="get", description="Get the timezone of a user")
     async def get(
         self, inter, user: disnake.User = commands.Param(name="user", default=None)
     ):
