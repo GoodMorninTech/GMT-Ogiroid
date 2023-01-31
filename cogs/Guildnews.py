@@ -1,15 +1,14 @@
 import datetime
-from utils.DBhandlers import GuildNewsHandler
-
-from pymongo import MongoClient
 
 import disnake
 from disnake.ext import commands, tasks
+from pymongo import MongoClient
 
+from utils.DBhandlers import GuildNewsHandler
 from utils.bot import OGIROID
 from utils.config import Guilds
-from utils.models import GuildNewsModel
 from utils.exceptions import GuildNewsAlreadyExists
+from utils.models import GuildNewsModel
 
 main_guild = Guilds.main_guild
 
@@ -32,50 +31,50 @@ class GuildNews(commands.Cog):
     @commands.has_permissions(administrator=True)
     @commands.slash_command(name="setup", description="Setup the news channel")
     async def setup(
-        self,
-        inter,
-        channel: disnake.TextChannel = commands.Param(
-            description="The news channel, make sure to give me the permissions to send messages and embeds"
-        ),
-        frequency: str = commands.Param(
-            description="How often should I send the news",
-            choices=["everyday", "weekdays", "weekends"],
-        ),
-        bbc: bool = commands.Param(description="Should I send BBC news?"),
-        cnn: bool = commands.Param(description="Should I send CNN news?"),
-        guardian: bool = commands.Param(description="Should I send Guardian news?"),
-        theverge: bool = commands.Param(description="Should I send The Verge news?"),
-        techcrunch: bool = commands.Param(description="Should I send TechCrunch news?"),
-        gmt: bool = commands.Param(description="Should i send GMT news"),
-        time: str = commands.Param(
-            description="What time should I send the news? (UTC timezone)",
-            choices=[
-                "00:00",
-                "01:00",
-                "02:00",
-                "03:00",
-                "04:00",
-                "05:00",
-                "06:00",
-                "07:00",
-                "08:00",
-                "09:00",
-                "10:00",
-                "11:00",
-                "12:00",
-                "13:00",
-                "14:00",
-                "15:00",
-                "16:00",
-                "17:00",
-                "18:00",
-                "19:00",
-                "20:00",
-                "21:00",
-                "22:00",
-                "23:00",
-            ],
-        ),
+            self,
+            inter,
+            channel: disnake.TextChannel = commands.Param(
+                description="The news channel, make sure to give me the permissions to send messages and embeds"
+            ),
+            frequency: str = commands.Param(
+                description="How often should I send the news",
+                choices=["everyday", "weekdays", "weekends"],
+            ),
+            bbc: bool = commands.Param(description="Should I send BBC news?"),
+            cnn: bool = commands.Param(description="Should I send CNN news?"),
+            guardian: bool = commands.Param(description="Should I send Guardian news?"),
+            theverge: bool = commands.Param(description="Should I send The Verge news?"),
+            techcrunch: bool = commands.Param(description="Should I send TechCrunch news?"),
+            gmt: bool = commands.Param(description="Should i send GMT news"),
+            time: str = commands.Param(
+                description="What time should I send the news? (UTC timezone)",
+                choices=[
+                    "00:00",
+                    "01:00",
+                    "02:00",
+                    "03:00",
+                    "04:00",
+                    "05:00",
+                    "06:00",
+                    "07:00",
+                    "08:00",
+                    "09:00",
+                    "10:00",
+                    "11:00",
+                    "12:00",
+                    "13:00",
+                    "14:00",
+                    "15:00",
+                    "16:00",
+                    "17:00",
+                    "18:00",
+                    "19:00",
+                    "20:00",
+                    "21:00",
+                    "22:00",
+                    "23:00",
+                ],
+            ),
     ):
         await inter.response.defer()
         news_list = ""
@@ -148,18 +147,18 @@ class GuildNews(commands.Cog):
             embed=disnake.Embed(
                 title="News",
                 description="Here are the latest tech news",
-                color=self.bot.config.colors.white,
-            )
+                color=self.bot.config.colors.red,
+            ).set_footer(text="Here's your daily dose of tech news")
         )
 
         for article in articles:
-            await channel.send(
-                embed=disnake.Embed(colour=0xDD444).add_field(
-                    name=article["title"],
-                    value=f"{article['description']}\n[Read more]({article['url']})\n**Source**: {article['source']}",
-                    inline=False,
-                ).set_image(url=article["thumbnail"])
-            )
+            embed = disnake.Embed(
+                title=article["title"],
+                description=f"{article['description']}\n[Read more]({article['url']})\n**Source**: {article['source']}",
+                color=self.bot.config.colors.red,
+            ).set_image(url=article["thumbnail"])
+            embed.set_footer(text="Powered by Good Morning Tech")
+            await channel.send(embed=embed)
 
 
 def setup(bot: commands.Bot):
