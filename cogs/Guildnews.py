@@ -116,7 +116,7 @@ class GuildNews(commands.Cog):
             f"Successfully setup the news channel to {channel.mention}", ephemeral=True
         )
 
-    @tasks.loop(minutes=60)
+    @tasks.loop(minutes=1)
     async def send_news(self):
         guilds = await self.news_handler.get_configs()
         current_time = datetime.datetime.utcnow().strftime("%H:00")
@@ -148,7 +148,7 @@ class GuildNews(commands.Cog):
                 title="News",
                 description="Here are the latest tech news",
                 color=self.bot.config.colors.red,
-            ).set_footer(text="Here's your daily dose of tech news")
+            ).set_footer(text="Powered by Good Morning Tech")
         )
 
         for article in articles:
