@@ -7,8 +7,9 @@ from pymongo import MongoClient
 from utils.DBhandlers import GuildNewsHandler
 from utils.bot import OGIROID
 from utils.config import Guilds
-from utils.exceptions import GuildNewsAlreadyExists
+from utils.exceptions import GuildNewsAlreadyExists, GuildNewsNotFound
 from utils.models import GuildNewsModel
+from utils.CONSTANTS import TIMES
 
 main_guild = Guilds.main_guild
 
@@ -28,9 +29,13 @@ class GuildNews(commands.Cog):
     def cog_unload(self) -> None:
         self.send_news.cancel()
 
+    @commands.slash_command(description="Setup the news channel")
+    async def setup(self, inter):
+        pass
+
     @commands.has_permissions(administrator=True)
-    @commands.slash_command(name="setup", description="Setup the news channel")
-    async def setup(
+    @setup.sub_command(name="create", description="Setup the news channel")
+    async def create(
         self,
         inter,
         channel: disnake.TextChannel = commands.Param(
@@ -48,32 +53,7 @@ class GuildNews(commands.Cog):
         gmt: bool = commands.Param(description="Should i send GMT news"),
         time: str = commands.Param(
             description="What time should I send the news? (UTC timezone)",
-            choices=[
-                "00:00",
-                "01:00",
-                "02:00",
-                "03:00",
-                "04:00",
-                "05:00",
-                "06:00",
-                "07:00",
-                "08:00",
-                "09:00",
-                "10:00",
-                "11:00",
-                "12:00",
-                "13:00",
-                "14:00",
-                "15:00",
-                "16:00",
-                "17:00",
-                "18:00",
-                "19:00",
-                "20:00",
-                "21:00",
-                "22:00",
-                "23:00",
-            ],
+            choices=TIMES,
         ),
     ):
         await inter.response.defer()
@@ -109,14 +89,97 @@ class GuildNews(commands.Cog):
             )
         except GuildNewsAlreadyExists:
             return await inter.send(
-                f"Your guild already has a news channel setup, to change it use `/edit-config`"
+                f"Your server already has a news channel setup, to change it use `/setup edit`"
             )
 
         await inter.send(
-            f"Successfully setup the news channel to {channel.mention}", ephemeral=True
+            f"Successfully setup the news channel to {channel.mention}",
+            ephemeral=True,
+            delete_after=10,
         )
 
-    @tasks.loop(minutes=50)
+    @commands.has_permissions(administrator=True)
+    @setup.sub_command(
+        name="edit",
+        description="Edit the news config. Leave the parameters unchanged if you don't want to change them",
+    )
+    async def edit(
+        self,
+        inter,
+        channel: disnake.TextChannel = commands.Param(
+            description="The news channel, make sure to give me the permissions to send messages and embeds",
+            default=None,
+        ),
+        frequency: str = commands.Param(
+            description="How often should I send the news",
+            choices=["everyday", "weekdays", "weekends"],
+            default=None,
+        ),
+        bbc: bool = commands.Param(description="Should I send BBC news?", default=None),
+        cnn: bool = commands.Param(description="Should I send CNN news?", default=None),
+        guardian: bool = commands.Param(
+            description="Should I send Guardian news?", default=None
+        ),
+        theverge: bool = commands.Param(
+            description="Should I send The Verge news?", default=None
+        ),
+        techcrunch: bool = commands.Param(
+            description="Should I send TechCrunch news?", default=None
+        ),
+        gmt: bool = commands.Param(description="Should i send GMT news", default=None),
+        time: str = commands.Param(
+            description="What time should I send the news? (UTC timezone)",
+            choices=TIMES,
+            default=None,
+        ),
+    ):
+        await inter.response.defer()
+        news_list = ""
+
+        news_sources = {
+            "BBC": bbc,
+            "CNN": cnn,
+            "Guardian": guardian,
+            "Verge": theverge,
+            "TechCrunch": techcrunch,
+            "GMT": gmt,
+        }
+        current_config = await self.news_handler.get_config(inter.guild.id)
+        current_news = current_config.news.split(",")
+
+        for name, value in news_sources.items():
+            if value is True or name in current_news:
+                # we are creating a new news list
+                news_list += f"{name},"
+            elif value is False and name in current_news:
+                # doesn't really serve a purpose but it's cool
+                current_news.remove(name)
+            elif value is None and name in current_news:
+                # this means it's unchanged, and it has been part of it, so we add it
+                news_list += f"{name},"
+
+        if news_list.endswith(","):
+            news_list = news_list[:-1]
+
+        try:
+            await self.news_handler.update_config(
+                guild_id=inter.guild.id,
+                channel_id=channel.id if channel else current_config.channel_id,
+                frequency=frequency if frequency else current_config.frequency,
+                time=time if time else current_config.time,
+                news=news_list if news_list else current_config.news,
+                extras=None,
+            )
+        except GuildNewsNotFound:
+            return await inter.send(
+                f"Your server doesn't have a news channel setup, to set it up use `/setup create`"
+            )
+
+        await inter.send(
+            f"Successfully edited your configuration.", ephemeral=True, delete_after=5
+        )
+
+    @tasks.loop(minutes=60)
     async def send_news(self):
         guilds = await self.news_handler.get_configs()
         current_time = datetime.datetime.utcnow().strftime("%H:00")
@@ -133,6 +196,14 @@ class GuildNews(commands.Cog):
     async def send_news_to_channel(self, guild: GuildNewsModel):
         channel = self.bot.get_channel(guild.channel_id)
         if channel is None:
+            return
+
+        history = await channel.history(limit=1).flatten()
+
+        if history[0].author.id == self.bot.user.id and history[
+            0
+        ].created_at > disnake.utils.utcnow() - datetime.timedelta(minutes=10):
+            # we don't want to send two messages in a row
             return
 
         articles = self.mongo.goodmorningtech.articles.find(

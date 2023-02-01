@@ -803,14 +803,27 @@ class GuildNewsHandler:
         return True
 
     async def update_config(
-        self, guild_id: int, channel_id: int, news, frequency, extras, time
+        self,
+        guild_id: int,
+        channel_id: int = None,
+        news=None,
+        frequency=None,
+        extras=None,
+        time=None,
     ) -> bool:
         config = await self.get_config(guild_id)
         if config is None:
             raise GuildNewsNotFound
         await self.db.execute(
             "UPDATE guild_news SET channel_id = ?, news = ?, frequency = ?, extras = ?, time = ? WHERE guild_id = ?",
-            [channel_id, news, frequency, extras, guild_id, time],
+            [
+                channel_id,
+                news,
+                frequency,
+                extras,
+                time,
+                guild_id,
+            ],
         )
         await self.db.commit()
         return True
