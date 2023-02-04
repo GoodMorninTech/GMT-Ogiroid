@@ -52,7 +52,7 @@ class Welcome(Cog):
 
         greetings = ["Hello", "Hi", "Greetings", "Hola", "Bonjour", "Konnichiwa"]
         secondary_greeting = [
-            "Welcome to Lewis Menelaws' Official Discord Server! Feel free to look around & introduce yourself.",
+            "Welcome to the Official Good Morning Tech Discord Server! Feel free to look around & introduce yourself.",
             "Welcome to the server! We wish you have a great time here, make sure you tell us a little bit about yourself.",
             "Hope you are doing well! Welcome to the server. How about start by introducing yourself?",
             "It's great to have you here, please feel free to look around & introduce yourself.",
