@@ -179,6 +179,28 @@ class GuildNews(commands.Cog):
             f"Successfully edited your configuration.", ephemeral=True, delete_after=5
         )
 
+    @commands.has_permissions(administrator=True)
+    @setup.sub_command(name="delete", description="Delete the news config")
+    async def delete(
+        self,
+        inter,
+        confirm: bool = commands.Param(
+            description="Confirm deletion. No further confirmation will be asked"
+        ),
+    ):
+        try:
+            if not confirm:
+                return await inter.send(f"Please confirm the deletion.")
+            await self.news_handler.delete_config(inter.guild.id)
+        except GuildNewsNotFound:
+            return await inter.send(
+                f"Your server doesn't have a news channel setup, to set it up use `/setup create`"
+            )
+
+        await inter.send(
+            f"Successfully deleted your configuration.", ephemeral=True, delete_after=5
+        )
+
     @tasks.loop(minutes=60)
     async def send_news(self):
         guilds = await self.news_handler.get_configs()
