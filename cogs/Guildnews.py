@@ -60,12 +60,12 @@ class GuildNews(commands.Cog):
         news_list = ""
 
         news_sources = {
-            "BBC": bbc,
-            "CNN": cnn,
-            "Guardian": guardian,
-            "Verge": theverge,
-            "TechCrunch": techcrunch,
-            "GMT": gmt,
+            "bbc": bbc,
+            "cnn": cnn,
+            "guardian": guardian,
+            "verge": theverge,
+            "techcrunch": techcrunch,
+            "gmt": gmt,
         }
 
         for name, value in news_sources.items():
@@ -84,7 +84,8 @@ class GuildNews(commands.Cog):
                 channel_id=channel.id,
                 frequency=frequency,
                 time=time,
-                news=news_list,
+                # lowering it so it matches the db
+                news=news_list.lower(),
                 extras=None,
             )
         except GuildNewsAlreadyExists:
@@ -137,25 +138,25 @@ class GuildNews(commands.Cog):
         news_list = ""
 
         news_sources = {
-            "BBC": bbc,
-            "CNN": cnn,
-            "Guardian": guardian,
-            "Verge": theverge,
-            "TechCrunch": techcrunch,
-            "GMT": gmt,
+            "bbc": bbc,
+            "cnn": cnn,
+            "guardian": guardian,
+            "verge": theverge,
+            "techcrunch": techcrunch,
+            "gmt": gmt,
         }
         current_config = await self.news_handler.get_config(inter.guild.id)
         current_news = current_config.news.split(",")
 
         for name, value in news_sources.items():
-            if value is True or name in current_news:
-                # we are creating a new news list
-                news_list += f"{name},"
-            elif value is False and name in current_news:
+            if value is False and name in current_news:
                 # doesn't really serve a purpose but it's cool
                 current_news.remove(name)
+            elif value is True or name in current_news:
+                # if it gets selected, or it's already in the list, we add it
+                news_list += f"{name},"
             elif value is None and name in current_news:
-                # this means it's unchanged, and it has been part of it, so we add it
+                # this means it's unchanged, and it has been part of it, so we add it, doesn't really serve a purpose
                 news_list += f"{name},"
 
         if news_list.endswith(","):
@@ -167,7 +168,8 @@ class GuildNews(commands.Cog):
                 channel_id=channel.id if channel else current_config.channel_id,
                 frequency=frequency if frequency else current_config.frequency,
                 time=time if time else current_config.time,
-                news=news_list if news_list else current_config.news,
+                # lowering it so it matches the news sources
+                news=news_list.lower() if news_list else current_config.news,
                 extras=None,
             )
         except GuildNewsNotFound:
@@ -216,6 +218,14 @@ class GuildNews(commands.Cog):
                     await self.send_news_to_channel(guild)
 
     async def send_news_to_channel(self, guild: GuildNewsModel):
+        source_names = {
+            "bbc": "BBC",
+            "cnn": "CNN",
+            "guardian": "Guardian",
+            "verge": "Verge",
+            "techcrunch": "TechCrunch",
+            "gmt": "GMT",
+        }
         channel = self.bot.get_channel(guild.channel_id)
         if channel is None:
             return
@@ -247,21 +257,24 @@ class GuildNews(commands.Cog):
         for article in articles:
             embed = disnake.Embed(
                 title=article["title"],
-                description=f"{article['description']}\n[Read more]({article['url']})\n**Source**: {article['source']}",
+                description=f"{article['description']}\n[Read more]({article['url']})\n**Source**: {source_names[article['source']]}",
                 color=self.bot.config.colors.red,
             ).set_image(url=article["thumbnail"])
             embed.set_footer(text="Powered by Good Morning Tech")
             await channel.send(embed=embed)
 
         embed = disnake.Embed(
-            title="Powered by Good Morning Tech. Check out our Website.",
+            title="Powered by Good Morning Tech. Check out our Website and join our Discord.",
             color=self.bot.config.colors.red,
         )
         embed.set_image(url="https://cdn.goodmorningtech.news/logo.png")
         await channel.send(
             embed=embed,
             components=[
-                disnake.ui.Button(label="Website", url="https://goodmorningtech.news")
+                disnake.ui.Button(label="Website", url="https://goodmorningtech.news"),
+                disnake.ui.Button(
+                    label="Discord", url="https://discord.goodmorningtech.news"
+                ),
             ],
         )
 
