@@ -232,11 +232,14 @@ class GuildNews(commands.Cog):
 
         history = await channel.history(limit=1).flatten()
 
-        if history[0].author.id == self.bot.user.id and history[
-            0
-        ].created_at > disnake.utils.utcnow() - datetime.timedelta(minutes=10):
-            # we don't want to send two messages in a row
-            return
+        try:
+            if history[0].author.id == self.bot.user.id and history[
+                0
+            ].created_at > disnake.utils.utcnow() - datetime.timedelta(minutes=10):
+                # we don't want to send two messages in a row
+                return
+        except IndexError:
+            pass
 
         articles = self.mongo.goodmorningtech.articles.find(
             {
