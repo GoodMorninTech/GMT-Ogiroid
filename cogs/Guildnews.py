@@ -178,7 +178,7 @@ class GuildNews(commands.Cog):
             )
 
         await inter.send(
-            f"Successfully edited your configuration.", ephemeral=True, delete_after=5
+            f"Successfully edited your configuration.", ephemeral=True, delete_after=10
         )
 
     @commands.has_permissions(administrator=True)
@@ -200,7 +200,25 @@ class GuildNews(commands.Cog):
             )
 
         await inter.send(
-            f"Successfully deleted your configuration.", ephemeral=True, delete_after=5
+            f"Successfully deleted your configuration.", ephemeral=True, delete_after=10
+        )
+
+    @commands.has_permissions()
+    @setup.sub_command(name="get", description="Get the news config")
+    async def get(self, inter: disnake.ApplicationCommandInteraction):
+        try:
+            config = await self.news_handler.get_config(inter.guild.id)
+        except GuildNewsNotFound:
+            return await inter.send(
+                f"Your server doesn't have a news channel setup, to set it up use `/setup create`"
+            )
+
+        channel = inter.guild.get_channel(config.channel_id)
+
+        await inter.send(
+            f"Your news channel is {channel.mention}, it sends news {'on ' if not config.frequency == 'everyday' else ''}{config.frequency} at"
+            f" {config.time} UTC, and it sends news from {config.news}",
+            ephemeral=True,
         )
 
     @tasks.loop(minutes=60)
