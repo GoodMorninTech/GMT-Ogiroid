@@ -87,7 +87,7 @@ class OGIROID(commands.InteractionBot):
                 "--------------------------------------------------------------------------------"
             )
             print("Bot is ready! Logged in as: " + self.user.name)
-            print("Bot devs: HarryDaDev | FreebieII | JasonLovesDoggo | Levani")
+            print("Bot devs: HarryDaDev | FreebieII | JasonLovesDoggo | LevaniVashadze | OpenSourceSimon")
             print(f"Bot version: {__VERSION__}")
             print(
                 "--------------------------------------------------------------------------------"
