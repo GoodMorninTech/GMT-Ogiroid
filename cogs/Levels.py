@@ -101,6 +101,8 @@ class LevelsController:
 
     async def add_user(self, user: Member, guild: Guild):
         self.remove_cached(user)
+        if guild.id != main_guild:
+            return
         await self.db.execute(
             "INSERT INTO levels (user_id, guild_id, level, xp) VALUES (?, ?, ?, ?)",
             (user.id, guild.id, 0, 0),
@@ -212,6 +214,8 @@ class LevelsController:
 
     async def add_xp(self, message: Message, xp: int):
         user = await self.get_user(message.author)
+        if message.guild.id != main_guild:
+            return
         if user is None:
             await self.set_level(message.author, 0)
         user = await self.get_user(message.author)
@@ -254,6 +258,7 @@ class LevelsController:
         if any(
             [
                 message.guild is None,
+                message.guild.id != main_guild,
                 message.author.bot,
                 message.type
                 not in [
