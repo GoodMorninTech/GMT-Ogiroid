@@ -372,6 +372,9 @@ class LevelsController:
 
     @staticmethod
     async def send_levelup(message: Message, level: int):
+        # Only send this message to our server
+        if message.guild.id != main_guild:
+            return
         user = message.author
         if level in [0, 1, 2, 3]:
             return
