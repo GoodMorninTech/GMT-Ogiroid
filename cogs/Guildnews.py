@@ -46,7 +46,6 @@ class GuildNews(commands.Cog):
             choices=["everyday", "weekdays", "weekends"],
         ),
         bbc: bool = commands.Param(description="Should I send BBC news?"),
-        cnn: bool = commands.Param(description="Should I send CNN news?"),
         guardian: bool = commands.Param(description="Should I send Guardian news?"),
         theverge: bool = commands.Param(description="Should I send The Verge news?"),
         techcrunch: bool = commands.Param(description="Should I send TechCrunch news?"),
@@ -61,7 +60,6 @@ class GuildNews(commands.Cog):
 
         news_sources = {
             "bbc": bbc,
-            "cnn": cnn,
             "guardian": guardian,
             "verge": theverge,
             "techcrunch": techcrunch,
@@ -117,7 +115,6 @@ class GuildNews(commands.Cog):
             default=None,
         ),
         bbc: bool = commands.Param(description="Should I send BBC news?", default=None),
-        cnn: bool = commands.Param(description="Should I send CNN news?", default=None),
         guardian: bool = commands.Param(
             description="Should I send Guardian news?", default=None
         ),
@@ -139,7 +136,6 @@ class GuildNews(commands.Cog):
 
         news_sources = {
             "bbc": bbc,
-            "cnn": cnn,
             "guardian": guardian,
             "verge": theverge,
             "techcrunch": techcrunch,
