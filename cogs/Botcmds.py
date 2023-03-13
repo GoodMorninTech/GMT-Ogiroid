@@ -97,11 +97,7 @@ class Commands(commands.Cog):
     async def botinfo(self, inter):
         """Shows the info of the bot"""
         embed = disnake.Embed(
-            title="Ogiroid Information: ", description=" ", color=0xFFFFFF
-        )
-        embed.add_field(name="**Bot Name: **", value=f"```>> Ogiroid```", inline=False)
-        embed.add_field(
-            name="**Bot Version: **", value=f"```>> {__VERSION__}```", inline=False
+            title="Discord bot of Good Morning Tech", description=" ", color=0xFFFFFF
         )
         embed.add_field(
             name="**Disnake Version: **",
@@ -110,22 +106,18 @@ class Commands(commands.Cog):
         )
         embed.add_field(
             name="**Bot Developers: **",
-            value=f"`>`[**FreebieII**](https://github.com/FreebieII) (<@744998591365513227>)\n"
-            f"`>`[**HarryDaDev**](https://github.com/ImmaHarry) (<@963860161976467498>)\n"
-            f"`>`[**JasonLovesDoggo**](https://github.com/JasonLovesDoggo) (<@511724576674414600>)\n"
-            f"`>`[**DWAA1660**](https://github.com/DWAA1660) (<@491266830674034699>)\n"
-            f"`>`[**LevaniVashadze**](https://github.com/LevaniVashadze) (<@662656158129192961>)\n"
-            f"`>`[**CordlessCoder**](https://github.com/CordlessCoder) (<@577885109894512659>)",
+            value=f"`>`[**OpenSourceSimon**](https://github.com/OpenSourceSimon) (<@627450451297566733>)\n"
+            f"`>`[**LevaniVashadze**](https://github.com/LevaniVashadze) (<@662656158129192961>)\n",
             inline=False,
         )
         embed.set_thumbnail(
-            url="https://cdn.discordapp.com/attachments/985729550732394536/987287532146393109/discord-avatar-512-NACNJ.png"
+            url="https://cdn.goodmorningtech.news/logo.png"
         )
 
         button = disnake.ui.Button(
             label="Source",
             style=disnake.ButtonStyle.url,
-            url="https://github.com/LewisProjects/Ogiroid",
+            url="https://github.com/GoodMorninTech/GMT-Ogiroid",
         )
         await inter.send(embed=embed, components=button)
 
