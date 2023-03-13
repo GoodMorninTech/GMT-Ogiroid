@@ -15,14 +15,6 @@ class Memes(commands.Cog):
     def __init__(self, bot: OGIROID):
         self.bot = bot
 
-    @commands.slash_command(
-        guild_ids=[main_guild], name="onlyfans", description="Lewis' OnlyFans"
-    )
-    async def onlyfans(self, inter):
-        """Lewis' Onlyfans"""
-        await inter.send(
-            "https://media.wired.com/photos/59548ac98e8cc150fa8ec379/master/w_2560%2Cc_limit/GettyImages-56196238.jpg"
-        )
 
     @commands.slash_command(
         guild_ids=[main_guild],

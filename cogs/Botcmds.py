@@ -33,7 +33,6 @@ class Commands(commands.Cog):
     def __init__(self, bot: OGIROID):
         self.bot = bot
 
-    # Can be deprecated since there is a server info command now and its specific to the Lewis's Server
     @commands.slash_command(
         guild_ids=[main_guild],
         name="membercount",
@@ -46,7 +45,7 @@ class Commands(commands.Cog):
         bot_member_count = len([m for m in inter.guild.members if m.bot])
         embed = disnake.Embed(title="Member count", description=" ", color=0xFFFFFF)
         embed.add_field(
-            name="Members of Coding With Lewis",
+            name="Members of Good Morning Tech Discord Server",
             value=f" \🌐  All members: **{member_count}**\n \👩‍👩‍👦‍👦 All Humans: **{true_member_count}**\n \🤖  All Bots: **{bot_member_count}**",
             inline=False,
         )

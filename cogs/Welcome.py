@@ -26,9 +26,9 @@ class Welcome(Cog):
 
             await member.create_dm()
             embed = disnake.Embed(
-                title="Welcome to Lewis Menelaws' Official Discord Server",
+                title="Welcome to the Good Morning Tech Official Discord Server",
                 description=f"Welcome to the official Discord server {member.name},"
-                f" please checkout the designated channels.We hope you have a great time here.",
+                f" please checkout the designated channels. We hope you have a great time here.",
                 color=0xFFFFFF,
             )
             embed.add_field(
