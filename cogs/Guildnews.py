@@ -276,7 +276,7 @@ class GuildNews(commands.Cog):
             )
         )
 
-        random.shuffle(articles)
+        random.shuffle(list(articles))
         # articles_per_source = int(8 / source_amount)
         sources = guild.news.split(",")
         source_amount = len(sources)
