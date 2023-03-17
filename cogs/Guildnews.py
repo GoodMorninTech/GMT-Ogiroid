@@ -1,4 +1,5 @@
 import datetime
+import random
 
 import disnake
 from disnake.ext import commands, tasks
@@ -262,7 +263,7 @@ class GuildNews(commands.Cog):
         articles = self.mongo.goodmorningtech.articles.find(
             {
                 "date": {
-                    "$gte": datetime.datetime.utcnow() - datetime.timedelta(days=1)
+                    "$gte": datetime.datetime.utcnow() - datetime.timedelta(days=1, hours=2)
                 },
                 "source": {"$in": guild.news.split(",")},
             }
@@ -274,6 +275,36 @@ class GuildNews(commands.Cog):
                 color=self.bot.config.colors.red,
             )
         )
+
+        random.shuffle(articles)
+        # articles_per_source = int(8 / source_amount)
+        sources = guild.news.split(",")
+        source_amount = len(sources)
+
+        # EQUALLY DISTRIBUTE THE articles across sources
+        if source_amount == 1:
+            # Means that there is only one source
+            articles = articles[:8]
+        else:
+            articles_per_source = 8 // source_amount
+            remaining_articles = 8 % source_amount
+
+            # create a dictionary to store the selected articles for each source
+            source_articles = {source: [] for source in sources}
+
+            # iterate over the articles and add them to the corresponding source_articles list
+            for article in articles:
+                source = article["source"]
+                if len(source_articles[source]) < articles_per_source:
+                    source_articles[source].append(article)
+                elif remaining_articles > 0:
+                    source_articles[source].append(article)
+                    remaining_articles -= 1
+                if sum(len(s) for s in source_articles.values()) == 8:
+                    break
+
+            # flatten the dictionary to a list and shuffle the result
+            articles = [article for source in source_articles.values() for article in source]
 
         for article in articles:
             embed = disnake.Embed(
