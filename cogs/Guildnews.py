@@ -222,7 +222,7 @@ class GuildNews(commands.Cog):
             ephemeral=True,
         )
 
-    @tasks.loop(seconds=1)
+    @tasks.loop(minutes=60)
     async def send_news(self):
         guilds = await self.news_handler.get_configs()
         current_time = datetime.datetime.utcnow().strftime("%H:00")
