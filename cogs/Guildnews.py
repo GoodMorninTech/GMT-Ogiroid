@@ -222,7 +222,7 @@ class GuildNews(commands.Cog):
             ephemeral=True,
         )
 
-    @tasks.loop(minutes=60)
+    @tasks.loop(seconds=1)
     async def send_news(self):
         guilds = await self.news_handler.get_configs()
         current_time = datetime.datetime.utcnow().strftime("%H:00")
@@ -275,8 +275,9 @@ class GuildNews(commands.Cog):
                 color=self.bot.config.colors.red,
             )
         )
+        articles = list(articles)
 
-        random.shuffle(list(articles))
+        random.shuffle(articles)
         # articles_per_source = int(8 / source_amount)
         sources = guild.news.split(",")
         source_amount = len(sources)
