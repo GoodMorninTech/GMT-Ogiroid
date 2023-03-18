@@ -61,7 +61,7 @@ class Log(Cog):
         embed = Embed(
             title="Avatar change",
             description="New image is below, old to the right.",
-            colour=self.log_channel.guild.get_member(after.id).colour,
+            colour=self.bot.config.colors.white,
             timestamp=datetime.now(),
         )
 
