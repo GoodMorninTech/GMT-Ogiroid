@@ -308,7 +308,7 @@ class GuildNews(commands.Cog):
             articles = [article for source in source_articles.values() for article in source]
 
         for article in articles:
-            if article["source"].lowercase() == "verge":
+            if article["source"] == "verge":
                 # There's a bug with the verge thumbnail URL, so we have a regex to fix it.
                 import re
                 newurl = re.search(
