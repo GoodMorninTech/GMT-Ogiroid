@@ -308,6 +308,13 @@ class GuildNews(commands.Cog):
             articles = [article for source in source_articles.values() for article in source]
 
         for article in articles:
+            if article["source"].lowercase() == "verge":
+                # There's a bug with the verge thumbnail URL, so we have a regex to fix it.
+                import re
+                newurl = re.search(
+                    r"^.*(?<=\/)(uploads\/.*)$", article["thumbnail"]
+                ).group(1)
+                article["thumbnail"] = f"https://cdn.vox-cdn.com/{newurl}"
             embed = disnake.Embed(
                 title=article["title"],
                 description=f"{article['description']}\n[Read more]({article['url']})\n**Source**: {source_names[article['source']]}",
