@@ -96,7 +96,7 @@ class Tickets(commands.Cog):
         # checks if user has a ticket already open
         for channel in guild.channels:
             try:
-                if int(channel.name.strip().replace("ticket-", "")) == int(user.id):
+                if int(channel.name.strip().replace("ticket-", "")) == int(user.name):
                     await errorEmb(
                         inter,
                         "You already have a ticket open. Please close it before opening a new one",
@@ -105,7 +105,7 @@ class Tickets(commands.Cog):
             except ValueError:
                 pass
 
-        ticket = await category.create_text_channel(f"ticket-{user.id}")
+        ticket = await category.create_text_channel(f"ticket-{user.name}")
         await ticket.edit(topic=f"Ticket opened by {user.name}.")
         await ticket.set_permissions(
             inter.guild.get_role(inter.guild.id), read_messages=False
