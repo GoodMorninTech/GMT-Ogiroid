@@ -15,7 +15,7 @@ main_guild = Guilds.main_guild
 
 
 async def autocomplete_timezones(inter, user_input: str):
-    return [tz for tz in timezones if user_input.lower() in tz.lower()][0:25]
+    return [tz for tz in timezones if user_input.lower() in tz.lower()][0:24]
 
 
 class Timezone(commands.Cog):

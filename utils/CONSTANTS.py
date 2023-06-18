@@ -889,13 +889,13 @@ VALID_CODE_LANGUAGES = [
 
 TRIVIA_CATEGORIES = [
     {"id": 9, "name": "General Knowledge"},
-    {"id": 10, "name": "Entertainment: Books"},
-    {"id": 11, "name": "Entertainment: Film"},
-    {"id": 12, "name": "Entertainment: Music"},
-    {"id": 13, "name": "Entertainment: Musicals & Theatres"},
-    {"id": 14, "name": "Entertainment: Television"},
-    {"id": 15, "name": "Entertainment: Video Games"},
-    {"id": 16, "name": "Entertainment: Board Games"},
+    {"id": 10, "name": "Books"},
+    {"id": 11, "name": "Film"},
+    {"id": 12, "name": "Music"},
+    {"id": 13, "name": "Musicals & Theatres"},
+    {"id": 14, "name": "Television"},
+    {"id": 15, "name": "Video Games"},
+    {"id": 16, "name": "Board Games"},
     {"id": 17, "name": "Science & Nature"},
     {"id": 18, "name": "Science: Computers"},
     {"id": 19, "name": "Science: Mathematics"},
@@ -910,8 +910,8 @@ TRIVIA_CATEGORIES = [
     {"id": 28, "name": "Vehicles"},
     {"id": 29, "name": "Entertainment: Comics"},
     {"id": 30, "name": "Science: Gadgets"},
-    {"id": 31, "name": "Entertainment: Japanese Anime & Manga"},
-    {"id": 32, "name": "Entertainment: Cartoon & Animations"},
+    {"id": 31, "name": "Japanese Anime & Manga"},
+    {"id": 32, "name": "Cartoon & Animations"},
 ]
 
 TIMES = [
